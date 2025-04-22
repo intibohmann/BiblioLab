@@ -1,89 +1,72 @@
-# 📚 Biblioteca Dirigida
+📚 Biblioteca Dirigida
+Projeto de PPO desenvolvido por Inti e Emanoel, a Biblioteca Dirigida é uma plataforma inteligente voltada para o apoio a estudos dirigidos, com foco em recomendações personalizadas de materiais educacionais como livros, vídeos e artigos.
 
-Projeto de PPO desenvolvido pelos alunos **Inti** e **Emanoel**, com o objetivo de criar um sistema web para gerenciamento e acesso a uma biblioteca de estudos online.
+🧠 Objetivo do Projeto
+A proposta do projeto é criar uma biblioteca digital inteligente que auxilie estudantes a encontrar conteúdos relevantes, confiáveis e de qualidade. O sistema será capaz de sugerir materiais de estudo com base no perfil e nos interesses do usuário, utilizando algoritmos de recomendação, além de contar com avaliações e feedbacks da comunidade para qualificar ainda mais as indicações.
 
----
+Em uma era com excesso de informações, encontrar bons conteúdos pode ser uma tarefa difícil. O projeto busca solucionar isso, facilitando o acesso a materiais organizados, relevantes e aprofundados, promovendo a autonomia e a criatividade no processo de aprendizagem.
 
-## 📌 Sobre o Projeto
+🚀 Tecnologias Utilizadas
+PHP – Backend, controle de lógica e integração com banco de dados
 
-A **Biblioteca Dirigida** é uma aplicação web desenvolvida em **PHP** com banco de dados **MySQL**, pensada para auxiliar alunos no acesso a materiais de estudo organizados por categorias e tipos (ebooks, artigos, vídeos, etc).
+SQL – Criação e gerenciamento do banco de dados relacional
 
-O sistema permite o cadastro e login de usuários, visualização de materiais, comentários, progresso de estudo, e muito mais.
+JSON – Estruturação de dados e troca entre frontend e backend
 
----
+JavaScript – Funcionalidades interativas e dinâmicas
 
-## 🛠️ Tecnologias Utilizadas
+Tailwind CSS – Framework moderno para estilização responsiva
 
-- 💻 **PHP** (backend)
-- 🗃️ **MySQL** (banco de dados relacional)
-- 🌐 **HTML/CSS/JavaScript** (frontend básico)
-- 🛠️ **MySQL Workbench** (modelagem de banco e EER Diagram)
-- 📦 (Opcional) **XAMPP/Laragon** para ambiente local
+HTML/CSS – Estruturação e base visual da aplicação
 
----
+🔍 Funcionalidades Principais
+✅ Cadastro de materiais (livros, vídeos, artigos, etc.)
 
-## 📁 Estrutura do Projeto
-biblioteca-dirigida/
+✅ Sistema de recomendação com base em perfis e interesses
+
+✅ Feedbacks e avaliações de materiais pela comunidade
+
+✅ Filtros avançados por tema, formato, autor, entre outros
+
+✅ Interface amigável e responsiva para diversos dispositivos
+
+🌟 Diferenciais
+🔎 Recomendações Inteligentes: Algoritmos que sugerem conteúdos personalizados
+
+🌐 Centralização de Conhecimento: Reúne conteúdo confiável e validado em um só lugar
+
+💬 Interação com a Comunidade: Feedbacks e avaliações ajudam na curadoria do acervo
+
+🎯 Foco nos Estudos Dirigidos: Incentiva o aprendizado autônomo e aprofundado
+
+📁 Estrutura do Projeto
+/biblioteca-dirigida
 │
-├── 📁 config/              
-│   └── db.php        
-│
-├── 📁 controllers/        
-│   ├── usuarioController.php
-│   ├── materialController.php
-│   └── categoriaController.php
-│
-├── 📁 models/           
-│   ├── Usuario.php
-│   ├── Material.php
-│   └── Categoria.php
-│
-├── 📁 views/               
-│   ├── home.php
-│   ├── login.php
-│   ├── cadastro.php
-│   ├── dashboard.php
-│   └── materiais.php
-│
-├── 📁 public/             
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   └── script.js
-│   └── imagens/
-│       └── logo.png
-│
-├── 📁 sql/                
-│   ├── biblioteca_dirigida.sql 
-│   └── diagram.png             
-│
-├── index.php              
-├── routes.php            
-├── README.md             
-└── .htaccess            
+├── /assets          # Imagens e arquivos estáticos
+├── /css             # Estilos customizados e Tailwind
+├── /js              # Scripts de interatividade
+├── /php             # Backend e conexão com banco
+├── /sql             # Scripts de banco de dados
+├── index.php        # Página principal
+└── README.md        # Documentação do projeto
 
+🛠️ Como Executar o Projeto
+Clone o repositório:
+git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
+Configure um ambiente local com PHP, MySQL e servidor (Apache/Nginx).
 
----
+Importe o banco de dados com os arquivos da pasta /sql.
 
-## 🧱 Estrutura do Banco de Dados
+Acesse o index.php via localhost no navegador.
 
-O banco de dados é composto pelas seguintes tabelas principais:
+📌 Funcionalidades Futuras
+🔐 Login e autenticação de usuários (com perfis distintos)
 
-- **usuarios** – Cadastro e login
-- **materiais** – Armazena os conteúdos disponíveis
-- **categorias** – Organização dos materiais por tema
-- **comentarios** – Interações dos usuários com os conteúdos
-- **favoritos** – Lista pessoal de materiais salvos
-- **progresso_estudo** – Acompanhamento de leitura/estudo
-- **avaliacoes** – Notas e feedback dos usuários
+📬 Notificações sobre novos conteúdos recomendados
 
-> O diagrama EER do projeto está disponível no diretório `/sql`
+📊 Relatórios personalizados de progresso e interações
 
----
-
-## 🚀 Como Executar o Projeto
-
-1. **Clone o repositório** (caso esteja no GitHub ou semelhante):
-   git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
-
+👨‍💻 Desenvolvedores
+Inti bohmann leite da luz
+Emanoel vitor santos ribeiro
 
