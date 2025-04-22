@@ -39,7 +39,7 @@ HTML/CSS – Estruturação e base visual da aplicação
 
 🎯 Foco nos Estudos Dirigidos: Incentiva o aprendizado autônomo e aprofundado
 
-# 📁 Estrutura do Projeto
+📁 Estrutura do Projeto
 /biblioteca-dirigida
 │
 ├── /assets          # Imagens e arquivos estáticos
