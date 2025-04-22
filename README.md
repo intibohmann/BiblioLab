@@ -39,17 +39,6 @@ HTML/CSS – Estruturação e base visual da aplicação
 
 🎯 Foco nos Estudos Dirigidos: Incentiva o aprendizado autônomo e aprofundado
 
-📁 Estrutura do Projeto
-/biblioteca-dirigida
-│
-├── /assets          # Imagens e arquivos estáticos
-├── /css             # Estilos customizados e Tailwind
-├── /js              # Scripts de interatividade
-├── /php             # Backend e conexão com banco
-├── /sql             # Scripts de banco de dados
-├── index.php        # Página principal
-└── README.md        # Documentação do projeto
-
 # 🛠️ Como Executar o Projeto
 Clone o repositório:
 git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
