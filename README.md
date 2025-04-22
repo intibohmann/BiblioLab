@@ -77,14 +77,13 @@ O banco de dados é composto pelas seguintes tabelas principais:
 - **progresso_estudo** – Acompanhamento de leitura/estudo
 - **avaliacoes** – Notas e feedback dos usuários
 
-> O diagrama EER do projeto está disponível no diretório `/sql`.
+> O diagrama EER do projeto está disponível no diretório `/sql`
 
 ---
 
 ## 🚀 Como Executar o Projeto
 
 1. **Clone o repositório** (caso esteja no GitHub ou semelhante):
-   ```bash
    git clone https://github.com/intibohmann/Biblioteca-Dirigida.git
 
 
