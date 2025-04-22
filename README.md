@@ -30,7 +30,7 @@ HTML/CSS – Estruturação e base visual da aplicação
 
 ✅ Interface amigável e responsiva para diversos dispositivos
 
-#🌟 Diferenciais
+# 🌟 Diferenciais
 🔎 Recomendações Inteligentes: Algoritmos que sugerem conteúdos personalizados
 
 🌐 Centralização de Conhecimento: Reúne conteúdo confiável e validado em um só lugar
@@ -50,7 +50,7 @@ HTML/CSS – Estruturação e base visual da aplicação
 ├── index.php        # Página principal
 └── README.md        # Documentação do projeto
 
-#🛠️ Como Executar o Projeto
+# 🛠️ Como Executar o Projeto
 Clone o repositório:
 git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
 Configure um ambiente local com PHP, MySQL e servidor (Apache/Nginx).
