@@ -25,27 +25,27 @@ O sistema permite o cadastro e login de usuários, visualização de materiais, 
 ## 📁 Estrutura do Projeto
 biblioteca-dirigida/
 │
-├── 📁 config/              # Configurações gerais do sistema
-│   └── db.php             # Conexão com o banco de dados
+├── 📁 config/              
+│   └── db.php        
 │
-├── 📁 controllers/         # Lógica de controle (fluxo entre view e model)
+├── 📁 controllers/        
 │   ├── usuarioController.php
 │   ├── materialController.php
 │   └── categoriaController.php
 │
-├── 📁 models/              # Consultas ao banco de dados
+├── 📁 models/           
 │   ├── Usuario.php
 │   ├── Material.php
 │   └── Categoria.php
 │
-├── 📁 views/               # Páginas HTML/PHP exibidas ao usuário
+├── 📁 views/               
 │   ├── home.php
 │   ├── login.php
 │   ├── cadastro.php
 │   ├── dashboard.php
 │   └── materiais.php
 │
-├── 📁 public/              # Arquivos públicos e estáticos
+├── 📁 public/             
 │   ├── css/
 │   │   └── style.css
 │   ├── js/
@@ -53,14 +53,14 @@ biblioteca-dirigida/
 │   └── imagens/
 │       └── logo.png
 │
-├── 📁 sql/                 # Scripts SQL
-│   ├── biblioteca_dirigida.sql  # Criação das tabelas
-│   └── diagram.png              # Imagem do EER (opcional)
+├── 📁 sql/                
+│   ├── biblioteca_dirigida.sql 
+│   └── diagram.png             
 │
-├── index.php              # Página inicial do projeto
-├── routes.php             # Arquivo que redireciona rotas simples
-├── README.md              # Documentação do projeto
-└── .htaccess              # (opcional) URLs amigáveis
+├── index.php              
+├── routes.php            
+├── README.md             
+└── .htaccess            
 
 
 ---
