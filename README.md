@@ -1,4 +1,4 @@
-📚 Biblioteca Dirigida
+# 📚 Biblioteca Dirigida
 Projeto de PPO desenvolvido por Inti e Emanoel, a Biblioteca Dirigida é uma plataforma inteligente voltada para o apoio a estudos dirigidos, com foco em recomendações personalizadas de materiais educacionais como livros, vídeos e artigos.
 
 🧠 Objetivo do Projeto
