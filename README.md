@@ -42,9 +42,9 @@ HTML/CSS – Estruturação e base visual da aplicação
 # 🛠️ Como Executar o Projeto
 Clone o repositório:
 git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
-Configure um ambiente local com PHP, MySQL e servidor (Apache/Nginx).
+Configure um ambiente local com PHP, MySQL e servidor Apache
 
-Importe o banco de dados com os arquivos da pasta /sql.
+Importe o banco de dados com os arquivos da pasta /database.
 
 Acesse o index.php via localhost no navegador.
 
@@ -57,5 +57,6 @@ Acesse o index.php via localhost no navegador.
 
 # 👨‍💻 Desenvolvedores
 Inti bohmann leite da luz
+
 Emanoel vitor santos ribeiro
 
