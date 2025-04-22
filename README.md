@@ -84,6 +84,6 @@ O banco de dados é composto pelas seguintes tabelas principais:
 ## 🚀 Como Executar o Projeto
 
 1. **Clone o repositório** (caso esteja no GitHub ou semelhante):
-   git clone https://github.com/intibohmann/Biblioteca-Dirigida.git
+   git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
 
 
