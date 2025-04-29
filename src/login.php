@@ -1,55 +1,61 @@
-<?php include('head.php'); ?>
+<?php
+session_start(); // Inicia a sessão
+include('head.php');
+?>
 <body>
 <?php include('menu.php'); ?>
 
-    <h2>Login</h2>
-    <form action="login.php" method="POST">
-        <label for="username">Usuário:</label>
-        <input type="text" class="input is-small"    id="username" name="username" required><br><br>
+<h2>Login</h2>
+<form action="login.php" method="POST">
+    <label for="username">Usuário:</label>
+    <input type="text" class="input is-small" id="username" name="username" required><br><br>
 
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required><br><br>
+    <label for="password">Senha:</label>
+    <input type="password" id="password" name="password" required><br><br>
 
-        <input type="submit" value="Entrar">
-    </form>
-    <?php
-
+    <input type="submit" value="Entrar">
+</form>
+<?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera os dados do formulário
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // Conexão com o banco de dados
+    $servername = "localhost";
+    $dbUsername = "root";
+    $dbPassword = "";
+    $dbName = "biblioteca";
 
-    $userData = [
-        'username' => $username,
-        'password' => $password
-    ];
+    $conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
 
-
-    $file = 'users.json';
-
-
-    if (file_exists($file)) {
-
-        $jsonData = file_get_contents($file);
-        $users = json_decode($jsonData, true);
-    } else {
-
-        $users = [];
+    // Verifica a conexão
+    if ($conn->connect_error) {
+        die("Falha na conexão com o banco de dados: " . $conn->connect_error);
     }
 
+    // Consulta para verificar o usuário
+    $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE username = ? AND password = ?");
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    $users[] = $userData;
+    if ($result->num_rows > 0) {
+        // Login bem-sucedido
+        $user = $result->fetch_assoc();
+        $_SESSION['user_id'] = $user['id']; // Armazena o ID do usuário na sessão
+        $_SESSION['username'] = $user['username']; // Armazena o nome de usuário na sessão
+        header("Location: index.php");
+        exit;
+    } else {
+        echo "<p style='color:red;'>Usuário ou senha inválidos.</p>";
+    }
 
-
-    file_put_contents($file, json_encode($users, JSON_PRETTY_PRINT));
-
-
-    header("Location: index.php");
-    exit; 
+    $stmt->close();
+    $conn->close();
 }
 ?>
 
-<?php include("rodape.php");  ?>
+<?php include("rodape.php"); ?>
 </body>
 </html>
