@@ -10,8 +10,8 @@ include('head.php');
     <label for="usuario">Usuário:</label>
     <input type="text" class="input is-small" id="usuario" name="usuario" required><br><br>
 
-    <label for="password">Senha:</label>
-    <input type="password" id="password" name="password" required><br><br>
+    <label for="senha_hash">Senha:</label>
+    <input type="password" id="senha_hash" name="senha_hash" required><br><br>
 
     <input type="submit" value="Entrar">
 </form>
@@ -19,7 +19,7 @@ include('head.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera os dados do formulário
     $usuario = $_POST['usuario'];
-    $password = $_POST['password'];
+    $senha_hash = $_POST['senha_hash'];
 
     // Conexão com o banco de dados
     $servername = "localhost";
@@ -35,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Consulta para verificar o usuário
-    $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE usuario = ? AND password = ?");
-    $stmt->bind_param("ss", $usuario, $password);
+    $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE usuario = ? AND senha_hash = ?");
+    $stmt->bind_param("ss", $usuario, $senha_hash);
     $stmt->execute();
     $result = $stmt->get_result();
 
