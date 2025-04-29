@@ -5,6 +5,7 @@ CREATE TABLE Usuarios (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100),
     email VARCHAR(100) UNIQUE,
+    usuario, VARCHAR(50) UNIQUE,
     senha_hash VARCHAR(255),
     data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP,
     tipo ENUM('aluno', 'admin') DEFAULT 'aluno'
@@ -29,26 +30,6 @@ CREATE TABLE Categorias (
     descricao TEXT
 );
 
-CREATE TABLE Comentarios (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_id INT,
-    material_id INT,
-    comentario TEXT,
-    data_comentario DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id),
-    FOREIGN KEY (material_id) REFERENCES Materiais(id)
-);
-
-CREATE TABLE Avaliacoes (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    usuario_id INT,
-    material_id INT,
-    nota INT CHECK (nota >= 1 AND nota <= 5),
-    comentario TEXT,
-    data_avaliacao DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id),
-    FOREIGN KEY (material_id) REFERENCES Materiais(id)
-);
 
 CREATE TABLE ProgressoEstudo (
     id INT PRIMARY KEY AUTO_INCREMENT,

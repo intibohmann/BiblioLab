@@ -2,53 +2,55 @@
 <body>
 <?php include('menu.php'); ?>
 <?php
-// Processa o formulário quando enviado via AJAX
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $input = json_decode(file_get_contents('php://input'), true);
+// Configuração do banco de dados
+$host = 'localhost';
+$dbname = 'biblioteca';
+$user = 'root';
+$password = '';
 
-    $nome = $input['nome'];
-    $email = $input['email'];
-    $usuario = $input['usuario'];
-    $senha = $input['senha'];
-    $confirmar_senha = $input['confirmar_senha'];
+// Conexão com o banco de dados
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Erro na conexão com o banco de dados: " . $conn->connect_error);
+}
+
+// Processa o formulário quando enviado
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nome = $_POST['nome'];
+    $email = $_POST['email'];
+    $usuario = $_POST['usuario'];
+    $senha = $_POST['senha'];
+    $confirmar_senha = $_POST['confirmar_senha'];
 
     // Validação de dados
     if (empty($nome) || empty($email) || empty($usuario) || empty($senha) || empty($confirmar_senha)) {
-        echo json_encode(['status' => 'error', 'message' => 'Todos os campos são obrigatórios.']);
-        exit;
+        echo "<p>Todos os campos são obrigatórios.</p>";
     } elseif ($senha !== $confirmar_senha) {
-        echo json_encode(['status' => 'error', 'message' => 'As senhas não coincidem.']);
-        exit;
+        echo "<p>As senhas não coincidem.</p>";
     } else {
-        // Estrutura dos dados
-        $novo_usuario = array(
-            'nome' => $nome,
-            'email' => $email,
-            'usuario' => $usuario,
-            'senha' => password_hash($senha, PASSWORD_DEFAULT) // Usando hash para a senha
-        );
+        // Hash da senha
+        $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-        // Caminho para o arquivo JSON
-        $arquivo_json = 'users.json';
+        // Prepara a consulta SQL
+        $stmt = $conn->prepare("INSERT INTO Usuarios (nome, email, usuario, senha) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $nome, $email, $usuario, $senha_hash);
 
-        // Verifica se o arquivo já existe
-        if (file_exists($arquivo_json)) {
-            // Lê o conteúdo existente do arquivo
-            $dados_arquivo = file_get_contents($arquivo_json);
-            $usuarios = json_decode($dados_arquivo, true);
+        // Executa a consulta
+        if ($stmt->execute()) {
+            echo "<p>Cadastro realizado com sucesso!</p>";
         } else {
-            $usuarios = array();
+            echo "<p>Erro ao cadastrar: " . $stmt->error . "</p>";
         }
 
-        // Adiciona o novo usuário aos dados existentes
-        array_push($usuarios, $novo_usuario);
-
-        // Salva os dados no arquivo JSON
-        file_put_contents($arquivo_json, json_encode($usuarios, JSON_PRETTY_PRINT));
-
-        echo "Cadastro realizado com sucesso!";
+        // Fecha o statement
+        $stmt->close();
     }
 }
+
+// Fecha a conexão
+$conn->close();
 ?>
     <form method="POST" action="">
         <label for="nome">Nome:</label><br>
@@ -71,6 +73,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </body>
 </html>
 
-
-<?php include("rodape.php");  ?>
+<?php include("rodape.php"); ?>
 </body>
