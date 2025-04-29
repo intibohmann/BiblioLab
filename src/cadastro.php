@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
         // Prepara a consulta SQL
-        $stmt = $conn->prepare("INSERT INTO Usuarios (nome, email, usuario, senha) VALUES (?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Usuarios (nome, email, usuario, senha_hash) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $nome, $email, $usuario, $senha_hash);
 
         // Executa a consulta
