@@ -7,8 +7,8 @@ include('head.php');
 
 <h2>Login</h2>
 <form action="login.php" method="POST">
-    <label for="username">Usuário:</label>
-    <input type="text" class="input is-small" id="username" name="username" required><br><br>
+    <label for="usuario">Usuário:</label>
+    <input type="text" class="input is-small" id="usuario" name="usuario" required><br><br>
 
     <label for="password">Senha:</label>
     <input type="password" id="password" name="password" required><br><br>
@@ -18,7 +18,7 @@ include('head.php');
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Recupera os dados do formulário
-    $username = $_POST['username'];
+    $usuario = $_POST['usuario'];
     $password = $_POST['password'];
 
     // Conexão com o banco de dados
@@ -35,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Consulta para verificar o usuário
-    $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE username = ? AND password = ?");
-    $stmt->bind_param("ss", $username, $password);
+    $stmt = $conn->prepare("SELECT * FROM Usuarios WHERE usuario = ? AND password = ?");
+    $stmt->bind_param("ss", $usuario, $password);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Login bem-sucedido
         $user = $result->fetch_assoc();
         $_SESSION['user_id'] = $user['id']; // Armazena o ID do usuário na sessão
-        $_SESSION['username'] = $user['username']; // Armazena o nome de usuário na sessão
+        $_SESSION['usuario'] = $user['usuario']; // Armazena o nome de usuário na sessão
         header("Location: index.php");
         exit;
     } else {
