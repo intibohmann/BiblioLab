@@ -2,19 +2,23 @@
 <body>
 <?php include('menu.php'); ?>
 <?php
-// Processa o formulário quando enviado
+// Processa o formulário quando enviado via AJAX
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $usuario = $_POST['usuario'];
-    $senha = $_POST['senha'];
-    $confirmar_senha = $_POST['confirmar_senha'];
+    $input = json_decode(file_get_contents('php://input'), true);
+
+    $nome = $input['nome'];
+    $email = $input['email'];
+    $usuario = $input['usuario'];
+    $senha = $input['senha'];
+    $confirmar_senha = $input['confirmar_senha'];
 
     // Validação de dados
     if (empty($nome) || empty($email) || empty($usuario) || empty($senha) || empty($confirmar_senha)) {
-        echo "Todos os campos são obrigatórios.";
+        echo json_encode(['status' => 'error', 'message' => 'Todos os campos são obrigatórios.']);
+        exit;
     } elseif ($senha !== $confirmar_senha) {
-        echo "As senhas não coincidem.";
+        echo json_encode(['status' => 'error', 'message' => 'As senhas não coincidem.']);
+        exit;
     } else {
         // Estrutura dos dados
         $novo_usuario = array(

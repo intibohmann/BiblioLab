@@ -1,44 +1,6 @@
 <?php include("head.php")?>
 <body>
-
     <?php include("menuB.php")?>
-
-    <style>
-        .carousel {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
-        .carousel-item {
-            display: none;
-            width: 100%;
-            height: 300px;
-            background-color: #f0f0f0;
-            text-align: center;
-            line-height: 300px;
-            font-size: 24px;
-        }
-        .carousel-item.active {
-            display: block;
-        }
-        .carousel-control {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-        }
-        .carousel-control-prev {
-            left: 10px;
-        }
-        .carousel-control-next {
-            right: 10px;
-        }
-    </style>
-    </head>
-
     <h1 style="margin-left: 200px; font-size: 50px;">Introdução:</h1>
     <h2 style="margin-left: 240px;"class="subtitle">
         Aqui você encontrará os mais diversos materiais, visando compreender como funciona e porque funciona um submarino.<br> Além de compreender o papel, engenharia e história que perpassa pelo tema de Submarino. Bons estudos!
