@@ -1,33 +1,11 @@
 <?php include("head.php");?>
 <body>
-<nav class="navbar is-primary">
-    <div class="container">
-      <div class="navbar-brand">
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-        <a class="navbar-item" href="index.php">
-          Home
-        </a>
-        <a class="navbar-item" href="#">
-          Sobre
-        </a>
-      </div>
-      <div id="navbarMenu" class="navbar-menu">
-        <div class="navbar-start"></div>
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <h1>Biblioteca Dirigida</h1>
-          </div>
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-light" href="login.php">Login</a>
-              <a class="button is-light" href="cadastro.php">Cadastro</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<nav style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; width: 100%; position: absolute; top: 0;">
+    <div style="font-size: 3em; font-weight: bold; color: #fff;">BiblioLab</div>
+    <ul style="list-style: none; display: flex; gap: 30px; margin: 0; padding: 0;">
+        <li><a href="index.php" style="color: #fff; text-decoration: none; transition: color 0.3s ease;">Home</a></li>
+        <li><a href="sobre.php" style="color: #fff; text-decoration: none; transition: color 0.3s ease;">Sobre</a></li>
+        <li><a href="contato.php" style="color: #fff; text-decoration: none; transition: color 0.3s ease;">Contato</a></li>
+    </ul>
 </nav>
+</body>

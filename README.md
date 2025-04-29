@@ -56,7 +56,6 @@ Acesse o index.php via localhost no navegador.
 📊 Relatórios personalizados de progresso e interações
 
 # 👨‍💻 Desenvolvedores
-Inti bohmann leite da luz
 
 Emanoel vitor santos ribeiro
 
