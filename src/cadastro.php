@@ -107,7 +107,9 @@
 
                 // Executa a consulta
                 if ($stmt->execute()) {
-                    echo "<p class='success-message'>Cadastro realizado com sucesso!</p>";
+                    echo "<p class='success-message'>Cadastro realizado com sucesso! Redirecionando para o login...</p>";
+                    header("Refresh: 3; url=login.php");
+                    exit();
                 } else {
                     echo "<p class='error-message'>Erro ao cadastrar: " . $stmt->error . "</p>";
                 }

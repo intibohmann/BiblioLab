@@ -6,8 +6,8 @@
   <div class="container mx-auto">
     <div class="flex justify-center">
       <div class="text-center space-y-4">
-        <a href="grupo.php" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Material da Biblioteca</a>
-        <a href="chat.php" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Chat da Biblioteca</a>
+        <a href="grupo.php" class="bg-[#6a11cb] text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Material da Biblioteca</a>
+        <a href="chat.php" class="bg-[#6a11cb] text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Chat da Biblioteca</a>
       </div>
     </div>
   </div>
@@ -25,4 +25,5 @@
 .animate-bounce {
   animation: bounce 1.5s infinite;
 }
+</style>
 </style>

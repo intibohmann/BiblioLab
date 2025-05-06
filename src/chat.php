@@ -101,7 +101,7 @@ $messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
 
         .input-container button {
             padding: 10px 15px;
-            background-color: #007bff;
+            background-color: #6a11cb;
             color: white;
             border: none;
             border-radius: 20px;
@@ -110,7 +110,7 @@ $messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
         }
 
         .input-container button:hover {
-            background-color: #0056b3;
+            background-color: #6a11cb;
         }
     </style>
 </head>

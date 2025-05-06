@@ -133,6 +133,22 @@
                     <span>Biblioteca: Literatura</span>
                     <button class="button is-primary" onclick="moverItemParaParticipar('Literatura')">Participar</button>
                 </li>
+                <li class="list-item">
+                    <span>Biblioteca: Tecnologia</span>
+                    <button class="button is-primary" onclick="moverItemParaParticipar('Tecnologia')">Participar</button>
+                </li>
+                <li class="list-item">
+                    <span>Biblioteca: História</span>
+                    <button class="button is-primary" onclick="moverItemParaParticipar('História')">Participar</button>
+                </li>
+                <li class="list-item">
+                    <span>Biblioteca: Matemática</span>
+                    <button class="button is-primary" onclick="moverItemParaParticipar('Matemática')">Participar</button>
+                </li>
+                <li class="list-item">
+                    <span>Biblioteca: Física</span>
+                    <button class="button is-primary" onclick="moverItemParaParticipar('Física')">Participar</button>
+                </li>
             </ul>
         </div>
 
