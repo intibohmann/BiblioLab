@@ -1,33 +1,69 @@
-<?php include("head.php")?>
-<body>
-    <?php include("menuB.php")?>
-    <h1 style="margin-left: 200px; font-size: 50px;">Introdução:</h1>
-    <h2 style="margin-left: 240px;"class="subtitle">
-        Aqui você encontrará os mais diversos materiais, visando compreender como funciona e porque funciona um submarino.<br> Além de compreender o papel, engenharia e história que perpassa pelo tema de Submarino. Bons estudos!
-    </h2>
+<?php include("head.php") ?>
+<body class="bg-gray-100 text-gray-800">
+    <?php include("menuB.php") ?>
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold mt-8 ml-8">Introdução:</h1>
+        <h2 class="text-lg mt-4 ml-12 leading-relaxed">
+            Aqui você encontrará os mais diversos materiais, visando compreender como funciona e porque funciona um submarino.<br>
+            Além de compreender o papel, engenharia e história que perpassa pelo tema de Submarino. Bons estudos!
+        </h2>
 
-    <br>
-    <h1 style="margin-left: 200px; font-size: 50px;">Videos:</h1>
+        <h1 class="text-4xl font-bold mt-12 ml-8">Vídeos:</h1>
+        <div class="relative w-full max-w-3xl mx-auto mt-6">
+            <div class="carousel" id="carousel-videos">
+                <div class="carousel-item active">
+                    <iframe class="w-full h-64 rounded-lg shadow-lg" src="https://www.youtube.com/embed/EuhCLYb1Gl4?si=IMRme3LEVXotvxSy" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="carousel-item">
+                    <iframe class="w-full h-64 rounded-lg shadow-lg" src="https://www.youtube.com/embed/YPY76vB6BB8?si=jPoqQVfv0YGQkGDu" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <!-- Add more video items here -->
+            </div>
+            <button class="absolute top-1/2 left-0 transform -translate-y-1/2 text-2xl text-gray-600 hover:text-gray-800" onclick="prevSlide('carousel-videos')">&#10094;</button>
+            <button class="absolute top-1/2 right-0 transform -translate-y-1/2 text-2xl text-gray-600 hover:text-gray-800" onclick="nextSlide('carousel-videos')">&#10095;</button>
+        </div>
 
-    <div class="carousel" id="carousel-videos">
-        <div class="carousel-item active">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/EuhCLYb1Gl4?si=IMRme3LEVXotvxSy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <h1 class="text-4xl font-bold mt-12 ml-8">Artigos/Documentos:</h1>
+        <div class="relative w-full max-w-3xl mx-auto mt-6">
+            <div class="carousel" id="carousel-documents">
+                <div class="carousel-item active">
+                    <div class="p-4 bg-white rounded-lg shadow-lg">
+                        <a href="https://doi.org/10.1590/S0102-85292011000200002" class="text-blue-600 hover:underline">O projeto do submarino nuclear brasileiro</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="p-4 bg-white rounded-lg shadow-lg">
+                        <a href="https://core.ac.uk/download/pdf/287360724.pdf" class="text-blue-600 hover:underline">A engenharia mecânica na concepção de um submarino</a>
+                    </div>
+                </div>
+                <!-- Add more document items here -->
+            </div>
+            <button class="absolute top-1/2 left-0 transform -translate-y-1/2 text-2xl text-gray-600 hover:text-gray-800" onclick="prevSlide('carousel-documents')">&#10094;</button>
+            <button class="absolute top-1/2 right-0 transform -translate-y-1/2 text-2xl text-gray-600 hover:text-gray-800" onclick="nextSlide('carousel-documents')">&#10095;</button>
         </div>
-        <div class="carousel-item">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/YPY76vB6BB8?si=jPoqQVfv0YGQkGDu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="carousel-item">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/EEuh3-HuYVU?si=vONjQ79PbmSd3XIt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="carousel-item">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/zycu_yDCqTE?si=NnmgPXSWzqpBUxa0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="carousel-item">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/7bAaBL6CKV4?si=StwxSix27qoJBpkR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </div>
-        <div class="carousel-control carousel-control-prev" onclick="prevSlide('carousel-videos')">&#10094;</div>
-        <div class="carousel-control carousel-control-next" onclick="nextSlide('carousel-videos')">&#10095;</div>
     </div>
+
+    <style>
+        .carousel-item {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
 
     <script>
         function showSlide(carouselId, index) {
@@ -51,48 +87,10 @@
             showSlide(carouselId, currentIndex);
         }
 
-
-        showSlide('carousel-videos', 0); 
+        showSlide('carousel-videos', 0);
+        showSlide('carousel-documents', 0);
     </script>
 
-    <br>
-    <h1 style="margin-left: 200px; font-size: 50px;">Artigos/documentos:</h1>
-
-    <div class="carousel" id="carousel-documents">
-        <div class="carousel-item active">
-            <div class="document-content">
-                <a href="https://doi.org/10.1590/S0102-85292011000200002">O projeto do submarino nuclear brasileiro</a>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="document-content">
-                <a href="https://core.ac.uk/download/pdf/287360724.pdf">A engenharia mecânica na concepção de um submarino</a>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="document-content">
-                <a href="https://acervo-digital.espm.br/Artigos/Estudos%20de%20caso/2010/10%20-%20Submarino.com%20(A)%20801350-PDF-ENG.pdf">Submarino.com (A)</a>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="document-content">
-                <a href="https://www.scielo.br/j/rbef/a/ZcVPW9SKk5xMkCmnVqw7ztb/?lang=pt&format=html">Ludião versus princípio do submarino</a>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="document-content">
-                <a href="https://www.proquest.com/openview/6c4a5fd132736a176d20015c37d2a098/1?pq-origsite=gscholar&cbl=2026366&diss=y">Escape livre submarino</a>
-            </div>
-        </div>
-        <div class="carousel-control carousel-control-prev" onclick="prevSlide('carousel-documents')">&#10094;</div>
-        <div class="carousel-control carousel-control-next" onclick="nextSlide('carousel-documents')">&#10095;</div>
-    </div>
-
-    <script>
-        showSlide('carousel-documents', 0); 
-    </script>
-
-    <br><br>
-    <?php include("rodape.php");?>
+    <?php include("rodape.php"); ?>
 </body>
 </html>

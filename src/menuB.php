@@ -1,41 +1,28 @@
-<?php include("head.php");?>
+<?php include("head.php"); ?>
 <!-- Navbar -->
-<nav class="navbar is-primary">
-    <div class="container">
-      <div class="navbar-brand">
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-        <a class="navbar-item" href="index.php">
-          Home
-        </a>
-        <a class="navbar-item" href="#">
-          Sobre
-        </a>
-      </div>
-      <div id="navbarMenu" class="navbar-menu">
-        <div class="navbar-start"></div>
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <h1>Biblioteca Dirigida</h1>
-          </div>
-          <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-light" href="login.php">Login</a>
-              <a class="button is-light" href="cadastro.php">Cadastro</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-</nav>
-
+<?php include("menu.php"); ?> 
 <!-- Menu de Botões -->
-<section class="section2">
-    <div class="button-container">
-        <a href="grupo.php" class="button is-primary">Material da Biblioteca</a>
-        <a href="chat.php" class="button is-primary">Chat da Biblioteca</a>
+<section class="bg-gray-100 py-16 mt-16">
+  <div class="container mx-auto">
+    <div class="flex justify-center">
+      <div class="text-center space-y-4">
+        <a href="grupo.php" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Material da Biblioteca</a>
+        <a href="chat.php" class="bg-blue-600 text-white px-6 py-3 rounded-full text-lg shadow-lg hover:bg-blue-700 transition transform hover:scale-105 animate-bounce">Chat da Biblioteca</a>
+      </div>
     </div>
+  </div>
 </section>
+
+<style>
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-bounce {
+  animation: bounce 1.5s infinite;
+}
+</style>

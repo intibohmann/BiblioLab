@@ -4,23 +4,23 @@ include("menuB.php");
 
 session_start();
 
-//EU NÃO ENTENDO NEM O CÓDIGO QUE EU FIZ NESSA DESGRAÇA COMO PODE!
+// Gera um nome de usuário aleatório se não estiver definido
 if (!isset($_SESSION['username'])) {
     $_SESSION['username'] = 'User' . rand(1000, 9999); 
 }
 
+// Processa o envio de mensagens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $message = $_POST['message'];
-    $username = $_SESSION['username'];
-    $timestamp = date('Y-m-d , H:i:s');
-
-
-    file_put_contents('chat.txt', "$timestamp - $username: $message\n", FILE_APPEND);
+    $message = trim($_POST['message']);
+    if (!empty($message)) {
+        $username = $_SESSION['username'];
+        $timestamp = date('Y-m-d , H:i:s');
+        file_put_contents('chat.txt', "$timestamp - $username: $message\n", FILE_APPEND);
+    }
 }
 
-
-$messages = file_get_contents('chat.txt');
+// Lê as mensagens do arquivo
+$messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
 ?>
 
 <!DOCTYPE html>
