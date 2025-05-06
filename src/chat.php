@@ -4,23 +4,23 @@ include("menuB.php");
 
 session_start();
 
-// Gera um nome de usuário aleatório se não estiver definido
+//EU NÃO ENTENDO NEM O CÓDIGO QUE EU FIZ NESSA DESGRAÇA COMO PODE!
 if (!isset($_SESSION['username'])) {
     $_SESSION['username'] = 'User' . rand(1000, 9999); 
 }
 
-// Processa o envio de mensagens
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $message = trim($_POST['message']);
-    if (!empty($message)) {
-        $username = $_SESSION['username'];
-        $timestamp = date('Y-m-d , H:i:s');
-        file_put_contents('chat.txt', "$timestamp - $username: $message\n", FILE_APPEND);
-    }
+
+    $message = $_POST['message'];
+    $username = $_SESSION['username'];
+    $timestamp = date('Y-m-d , H:i:s');
+
+
+    file_put_contents('chat.txt', "$timestamp - $username: $message\n", FILE_APPEND);
 }
 
-// Lê as mensagens do arquivo
-$messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
+
+$messages = file_get_contents('chat.txt');
 ?>
 
 <!DOCTYPE html>
@@ -101,7 +101,7 @@ $messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
 
         .input-container button {
             padding: 10px 15px;
-            background-color: #6a11cb;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 20px;
@@ -110,7 +110,7 @@ $messages = file_exists('chat.txt') ? file_get_contents('chat.txt') : '';
         }
 
         .input-container button:hover {
-            background-color: #6a11cb;
+            background-color: #0056b3;
         }
     </style>
 </head>

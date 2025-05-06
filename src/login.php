@@ -107,11 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $result->fetch_assoc();
         if (password_verify($senha_hash, $user['senha_hash'])) {
             // Login bem-sucedido
-            $_SESSION['user_id'] = $user['id']; 
-            $_SESSION['usuario'] = $user['usuario']; 
-            $_SESSION['logged_in'] = true; 
-            
-            echo "<script>window.location.href = 'index.php';</script>"; // Redireciona para o index
+            $_SESSION['user_id'] = $user['id']; // Armazena o ID do usuário na sessão
+            $_SESSION['usuario'] = $user['usuario']; // Armazena o nome de usuário na sessão
+            header("Location: index.php");
             exit;
         } else {
             echo "<p style='color:red; text-align: center;'>Usuário ou senha inválidos.</p>";
