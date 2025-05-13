@@ -1,5 +1,5 @@
 <?php
-include "../config/config.inc.php";
+include "../database/config.php";
 
 class Database{
     private static function abrirConexao(){
