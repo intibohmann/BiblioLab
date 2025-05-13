@@ -89,7 +89,18 @@
     </div>
 
     <script>
-        showSlide('carousel-documents', 0); 
+      // Auto-avanço do carrossel a cada 5 segundos
+function iniciarCarrosselAuto(carouselId, intervalo = 5000) {
+    setInterval(() => {
+        nextSlide(carouselId);
+    }, intervalo);
+}
+
+// Iniciar para ambos carrosséis
+document.addEventListener('DOMContentLoaded', () => {
+    iniciarCarrosselAuto('carousel-videos');
+    iniciarCarrosselAuto('carousel-documents');
+});
     </script>
 
     <br><br>

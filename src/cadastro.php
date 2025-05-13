@@ -1,144 +1,200 @@
-<?php include('menu.php'); ?>
-<?php include('head.php'); ?>
-<style>
-   body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg, #6a11cb, #2575fc);
-        color: #fff;
-    }
+<?php 
+include('menu.php'); 
+include('head.php'); 
 
-    form {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 1s ease-in-out;
-        width: 300px;
-        text-align: center;
-    }
+// Processar formulário
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    try {
+        $pdo = new PDO('mysql:host=localhost;dbname=biblioteca', 'root', '');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold;
-    }
+        $usuario = new Usuario(
+            $_POST['nome'],
+            $_POST['email'],
+            $_POST['senha']
+        );
 
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    input[type="submit"],
-    input[type="button"], {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: none;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-        background: #2575fc;
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-        background:rgb(0, 0, 0);
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
+        if ($_POST['senha'] !== $_POST['confirmar_senha']) {
+            throw new Exception("As senhas não coincidem.");
         }
-        to {
+
+        if ($usuario->salvar($pdo)) {
+            $success = "Cadastro realizado com sucesso!";
+        } else {
+            throw new Exception("Erro ao cadastrar usuário.");
+        }
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+    }
+}
+?>
+
+<body>
+    <div class="form-container">
+        <h2>Cadastro</h2>
+        
+        <?php if(isset($error)): ?>
+            <div class="error-message"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+        
+        <?php if(isset($success)): ?>
+            <div class="success-message"><?= htmlspecialchars($success) ?></div>
+        <?php else: ?>
+            <form method="POST" action="">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required 
+                       value="<?= htmlspecialchars($_POST['nome'] ?? '') ?>">
+                
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required 
+                       value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+                
+                <label for="confirmar_senha">Confirmar Senha:</label>
+                <input type="password" id="confirmar_senha" name="confirmar_senha" required>
+                
+                <button type="submit">Cadastrar</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</body>
+
+<style>
+    body {
+        background: linear-gradient(120deg, #f0f4f8 0%, #c9e7fa 100%);
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .form-container {
+        background: #fff;
+        padding: 2.5rem 2rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(60, 120, 180, 0.15);
+        max-width: 400px;
+        width: 100%;
+        margin: 2rem;
+        animation: fadeInUp 0.8s cubic-bezier(.39,.575,.565,1.000);
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        100% {
             opacity: 1;
             transform: translateY(0);
         }
     }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #2a5d9f;
+        letter-spacing: 1px;
+        font-weight: 600;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    label {
+        font-size: 1rem;
+        color: #2a5d9f;
+        margin-bottom: 0.2rem;
+        font-weight: 500;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        padding: 0.7rem 1rem;
+        border: 1px solid #b3c6e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+        background: #f7fbff;
+    }
+
+    input:focus {
+        border-color: #2a5d9f;
+        outline: none;
+        background: #eaf4ff;
+    }
+
+    button[type="submit"] {
+        padding: 0.8rem;
+        background: linear-gradient(90deg, #2a5d9f 60%, #4bb3fd 100%);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        box-shadow: 0 2px 8px rgba(60, 120, 180, 0.08);
+        transition: background 0.2s, transform 0.1s;
+        animation: pulseBtn 1.2s infinite alternate;
+    }
+
+    @keyframes pulseBtn {
+        0% { transform: scale(1);}
+        100% { transform: scale(1.04);}
+    }
+
+    button[type="submit"]:hover {
+        background: linear-gradient(90deg, #4bb3fd 0%, #2a5d9f 100%);
+        transform: scale(1.05);
+    }
+
+    .error-message, .success-message {
+        margin-bottom: 15px;
+        padding: 12px;
+        border-radius: 7px;
+        font-size: 1rem;
+        text-align: center;
+        animation: fadeIn 0.7s;
+    }
+
+    .error-message {
+        color: #ff3333;
+        background: #ffeeee;
+        border: 1px solid #ffb3b3;
+    }
+
+    .success-message {
+        color: #009900;
+        background: #eeffee;
+        border: 1px solid #b3ffb3;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @media (max-width: 500px) {
+        .form-container {
+            padding: 1.2rem 0.7rem;
+            max-width: 98vw;
+        }
+        h2 {
+            font-size: 1.3rem;
+        }
+        label, input, button {
+            font-size: 1rem;
+        }
+    }
 </style>
-<body>
-    <div class="form-container">
-        <h2>Cadastro</h2>
-        <?php
-        // Configuração do banco de dados
-        $host = 'localhost';
-        $dbname = 'biblioteca';
-        $user = 'root';
-        $password = '';
 
-        // Conexão com o banco de dados
-        $conn = new mysqli($host, $user, $password, $dbname);
-
-        // Verifica a conexão
-        if ($conn->connect_error) {
-            die("<p class='error-message'>Erro na conexão com o banco de dados: " . $conn->connect_error . "</p>");
-        }
-
-        // Processa o formulário quando enviado
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $nome = $_POST['nome'];
-            $email = $_POST['email'];
-            $usuario = $_POST['usuario'];
-            $senha = $_POST['senha'];
-            $confirmar_senha = $_POST['confirmar_senha'];
-
-            // Validação de dados
-            if (empty($nome) || empty($email) || empty($usuario) || empty($senha) || empty($confirmar_senha)) {
-                echo "<p class='error-message'>Todos os campos são obrigatórios.</p>";
-            } elseif ($senha !== $confirmar_senha) {
-                echo "<p class='error-message'>As senhas não coincidem.</p>";
-            } else {
-                // Hash da senha
-                $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-
-                // Prepara a consulta SQL
-                $stmt = $conn->prepare("INSERT INTO Usuarios (nome, email, usuario, senha_hash) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $nome, $email, $usuario, $senha_hash);
-
-                // Executa a consulta
-                if ($stmt->execute()) {
-                    echo "<p class='success-message'>Cadastro realizado com sucesso!</p>";
-                } else {
-                    echo "<p class='error-message'>Erro ao cadastrar: " . $stmt->error . "</p>";
-                }
-
-                // Fecha o statement
-                $stmt->close();
-            }
-        }
-
-        // Fecha a conexão
-        $conn->close();
-        ?>
-        <form method="POST" action="">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required>
-
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="usuario">Usuário:</label>
-            <input type="text" id="usuario" name="usuario" required>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required>
-
-            <label for="confirmar_senha">Confirmar Senha:</label>
-            <input type="password" id="confirmar_senha" name="confirmar_senha" required>
-
-            <button type="submit">Cadastrar</button>
-        </form>
-    </div>
-</body>
-</html>
 <?php include("rodape.php"); ?>
