@@ -1,6 +1,6 @@
 <?php
 // Conexão com o banco de dados
-require_once 'Class/    Database.class.php';
+require_once 'Class/Database.class.php';
 
 try {
     $conexao = new PDO(DSN, USUARIO, SENHA);
