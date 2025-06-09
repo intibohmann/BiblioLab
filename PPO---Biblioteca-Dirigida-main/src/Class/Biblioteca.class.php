@@ -45,6 +45,14 @@ class Biblioteca {
     // CRUD
     public function inserir() {
         $conexao = new PDO(DSN, USUARIO, SENHA);
+        // Verifica se categoria existe
+        $catStmt = $conexao->prepare("SELECT COUNT(*) FROM categorias WHERE id = :categoria_id");
+        $catStmt->bindValue(':categoria_id', $this->getCategoriaId(), PDO::PARAM_INT);
+        $catStmt->execute();
+        $categoriaExiste = $catStmt->fetchColumn();
+        if (!$categoriaExiste) {
+            throw new Exception("Categoria informada não existe. ID informado: " . $this->getCategoriaId());
+        }
         $sql = "INSERT INTO Biblioteca (titulo, descricao, categoria_id)
                 VALUES (:titulo, :descricao, :categoria_id)";
         $comando = $conexao->prepare($sql);
@@ -66,13 +74,32 @@ class Biblioteca {
             }
         }
         $comando = $conexao->prepare($sql);
-        if ($tipo > 0) $comando->bindValue(':info', $info);
+        if ($tipo > 0) {
+            $comando->bindValue(':info', $info);
+        }
         $comando->execute();
         return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function alterar() {
         $conexao = new PDO(DSN, USUARIO, SENHA);
+
+        // Garante que categoria_id é um inteiro
+        $categoriaId = $this->getCategoriaId();
+        if (!is_numeric($categoriaId) || intval($categoriaId) != $categoriaId) {
+            throw new Exception("Categoria informada deve ser um ID numérico. Valor informado: " . $categoriaId);
+        }
+        $categoriaId = intval($categoriaId);
+
+        // Verifica se categoria existe
+        $catStmt = $conexao->prepare("SELECT COUNT(*) FROM categorias WHERE id = :categoria_id");
+        $catStmt->bindValue(':categoria_id', $categoriaId, PDO::PARAM_INT);
+        $catStmt->execute();
+        $categoriaExiste = $catStmt->fetchColumn();
+        if (!$categoriaExiste) {
+            throw new Exception("Categoria informada não existe. ID informado: " . $categoriaId);
+        }
+
         $sql = "UPDATE Biblioteca SET
                     titulo = :titulo,
                     descricao = :descricao,
@@ -81,7 +108,7 @@ class Biblioteca {
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':titulo', $this->getTitulo());
         $comando->bindValue(':descricao', $this->getDescricao());
-        $comando->bindValue(':categoria_id', $this->getCategoriaId());
+        $comando->bindValue(':categoria_id', $categoriaId);
         $comando->bindValue(':id', $this->getId());
         return $comando->execute();
     }

@@ -42,6 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Inserir no banco
         if ($material->inserir()) {
             echo "<div class='alert alert-success m-4'>Material cadastrado com sucesso! <a href='cadastro.php'>Voltar</a></div>";
+            header("Location: ../inicio/index.php");
+            
         } else {
             echo "<div class='alert alert-danger m-4'>Erro ao cadastrar material. <a href='cadastro.php'>Tentar novamente</a></div>";
         }

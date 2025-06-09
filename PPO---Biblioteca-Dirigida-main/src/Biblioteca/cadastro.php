@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Cadastro Biblioteca</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<?php
+    include("../Inicio/head.php");
+?>
+
     <script>
         function exibirCamposMaterial() {
             const origem = document.getElementById("origem").value;
@@ -12,20 +12,13 @@
         }
         window.onload = exibirCamposMaterial;
     </script>
-</head>
+
 
 <body>
-<nav style="background-color: #f8f9fa; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-    <img src="../../img/logo.png" alt="Logo" style="width: 100px; height: auto;"> 
-    <div style="font-size: 3em; font-weight: bold; color: black;">BiblioLab</div>
-    <ul style="list-style: none; display: flex; gap: 30px; margin: 0; padding: 0;">
-        <li><a href="../index.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Home</a></li>
-        <li><a href="../sobre.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Sobre</a></li>
-        <li><a href="../contato.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Contato</a></li>
-        <li><a href="../cadastro.php"style="color: black; text-decoration: none; transition: color 0.3s ease;">Cadastre-se</a></li>
-        <li><a href="../login.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Login</a></li>
-    </ul>
-</nav>
+<?php
+
+include ("../Inicio/Menu.php");
+?>
 <br>
 </body>
 <body class="bg-light">

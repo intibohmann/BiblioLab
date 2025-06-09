@@ -29,10 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $resultado = Biblioteca::listar(1,$id);
     if ($resultado){
         $biblioteca = $resultado[0];
-        $formulario = str_replace('{id}',$biblioteca->getId(),$formulario);
-        $formulario = str_replace('{titulo}',$biblioteca->gettitulo(),$formulario);
-        $formulario = str_replace('{descricao}',$biblioteca->getdescricao(),$formulario);
-        $formulario = str_replace('{categoria_id}',$biblioteca->getcategoria_id(),$formulario);
+        $formulario = str_replace('{id}', isset($biblioteca['id']) ? $biblioteca['id'] : '', $formulario);
+        $formulario = str_replace('{titulo}', isset($biblioteca['titulo']) ? $biblioteca['titulo'] : '', $formulario);
+        $formulario = str_replace('{descricao}', isset($biblioteca['descricao']) ? $biblioteca['descricao'] : '', $formulario);
+        $formulario = str_replace('{categoria_id}', isset($biblioteca['categoria_id']) ? $biblioteca['categoria_id'] : '', $formulario);
     }else{
         $formulario = str_replace('{id}',0,$formulario);
         $formulario = str_replace('{titulo}','',$formulario);
