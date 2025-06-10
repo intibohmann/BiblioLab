@@ -1,5 +1,5 @@
-# 📚 Biblioteca Dirigida
-Projeto de PPO desenvolvido por Inti e Emanoel, a Biblioteca Dirigida é uma plataforma inteligente voltada para o apoio a estudos dirigidos, com foco em recomendações personalizadas de materiais educacionais como livros, vídeos e artigos.
+# 📚 BiblioLab
+Projeto de PPO desenvolvido por Inti e Emanoel, a BiblioLab é uma plataforma inteligente voltada para o apoio a estudos dirigidos, com foco em recomendações personalizadas de materiais educacionais como livros, vídeos e artigos.
 
 # 🧠 Objetivo do Projeto
 A proposta do projeto é criar uma biblioteca digital inteligente que auxilie estudantes a encontrar conteúdos relevantes, confiáveis e de qualidade. O sistema será capaz de sugerir materiais de estudo com base no perfil e nos interesses do usuário, utilizando algoritmos de recomendação, além de contar com avaliações e feedbacks da comunidade para qualificar ainda mais as indicações.
@@ -15,7 +15,7 @@ JSON – Estruturação de dados e troca entre frontend e backend
 
 JavaScript – Funcionalidades interativas e dinâmicas
 
-Tailwind CSS – Framework moderno para estilização responsiva
+Bootstrap 5  – Framework moderno para estilização responsiva
 
 HTML/CSS – Estruturação e base visual da aplicação
 
@@ -41,7 +41,7 @@ HTML/CSS – Estruturação e base visual da aplicação
 
 # 🛠️ Como Executar o Projeto
 Clone o repositório:
-git clone https://github.com/intibohmann/PPO---Biblioteca-Dirigida.git
+git clone https://github.com/intibohmann/BiblioLab.git
 Configure um ambiente local com PHP, MySQL e servidor Apache
 
 Importe o banco de dados com os arquivos da pasta /database.
