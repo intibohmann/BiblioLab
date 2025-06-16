@@ -1,5 +1,6 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
+
 
 class Biblioteca {
     private $id;
@@ -44,7 +45,7 @@ class Biblioteca {
 
     // CRUD
     public function inserir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         // Verifica se categoria existe
         $catStmt = $conexao->prepare("SELECT COUNT(*) FROM categorias WHERE id = :categoria_id");
         $catStmt->bindValue(':categoria_id', $this->getCategoriaId(), PDO::PARAM_INT);
@@ -63,7 +64,7 @@ class Biblioteca {
     }
 
     public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM Biblioteca";
         if ($tipo > 0) {
             switch ($tipo) {
@@ -82,7 +83,7 @@ class Biblioteca {
     }
 
     public function alterar() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
 
         // Garante que categoria_id é um inteiro
         $categoriaId = $this->getCategoriaId();
@@ -114,7 +115,7 @@ class Biblioteca {
     }
 
     public function excluir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM Biblioteca WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());

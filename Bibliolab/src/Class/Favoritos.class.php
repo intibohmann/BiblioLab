@@ -1,5 +1,6 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
+
 
 class Favoritos {
     private $usuario_id;
@@ -7,8 +8,8 @@ class Favoritos {
     private $data_adicionado;
 
     public function __construct($usuario_id = null, $material_id = null, $data_adicionado = null) {
-        $this->usuario_id = Usuarios::$id;
-        $this->material_id = Materiais::$id;
+        $this->usuario_id = $usuario_id;
+        $this->material_id = $material_id;
         $this->data_adicionado = $data_adicionado;
     }
 
@@ -32,7 +33,7 @@ class Favoritos {
 
     // Adicionar favorito
     public function inserir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "INSERT INTO Favoritos (usuario_id, material_id) VALUES (:usuario_id, :material_id)";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $this->getUsuarioId());
@@ -42,7 +43,7 @@ class Favoritos {
 
     // Remover favorito
     public function excluir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM Favoritos WHERE usuario_id = :usuario_id AND material_id = :material_id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $this->getUsuarioId());
@@ -52,7 +53,7 @@ class Favoritos {
 
     // Listar favoritos de um usuário
     public static function listarPorUsuario($usuario_id) {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM Favoritos WHERE usuario_id = :usuario_id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $usuario_id);
@@ -62,7 +63,7 @@ class Favoritos {
 
     // Verificar se um material está nos favoritos de um usuário
     public static function existe($usuario_id, $material_id) {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT COUNT(*) FROM Favoritos WHERE usuario_id = :usuario_id AND material_id = :material_id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $usuario_id);
@@ -71,4 +72,3 @@ class Favoritos {
         return $comando->fetchColumn() > 0;
     }
 }
-?>

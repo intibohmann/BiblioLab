@@ -1,5 +1,6 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
+
 
 class ProgressoEstudo {
     private $id;
@@ -10,8 +11,8 @@ class ProgressoEstudo {
 
     public function __construct($id = null, $usuario_id = null, $material_id = null, $percentual_concluido = 0.00, $ultima_visualizacao = null) {
         $this->id = $id;
-        $this->usuario_id = Usuarios::$id;
-        $this->material_id = Materiais::$id;
+        $this->usuario_id = $usuario_id;
+        $this->material_id = $material_id;
         $this->percentual_concluido = $percentual_concluido;
         $this->ultima_visualizacao = $ultima_visualizacao;
     }
@@ -50,7 +51,7 @@ class ProgressoEstudo {
 
     // CRUD
     public function inserir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "INSERT INTO ProgressoEstudo (usuario_id, material_id, percentual_concluido, ultima_visualizacao)
                 VALUES (:usuario_id, :material_id, :percentual_concluido, :ultima_visualizacao)";
         $comando = $conexao->prepare($sql);
@@ -62,14 +63,15 @@ class ProgressoEstudo {
     }
 
     public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM ProgressoEstudo";
         if ($tipo > 0) {
-            switch ($tipo) {
-                case 1: $sql .= " WHERE id = :info ORDER BY id"; break;
-                case 2: $sql .= " WHERE usuario_id = :info ORDER BY usuario_id"; break;
-                case 3: $sql .= " WHERE material_id = :info ORDER BY material_id"; break;
-            }
+            $sql .= match ($tipo) {
+                1 => " WHERE id = :info ORDER BY id",
+                2 => " WHERE usuario_id = :info ORDER BY usuario_id",
+                3 => " WHERE material_id = :info ORDER BY material_id",
+                default => "",
+            };
         }
         $comando = $conexao->prepare($sql);
         if ($tipo > 0) $comando->bindValue(':info', $info);
@@ -78,7 +80,7 @@ class ProgressoEstudo {
     }
 
     public function alterar() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "UPDATE ProgressoEstudo SET
                     usuario_id = :usuario_id,
                     material_id = :material_id,
@@ -95,7 +97,7 @@ class ProgressoEstudo {
     }
 
     public function excluir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM ProgressoEstudo WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());

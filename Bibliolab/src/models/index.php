@@ -1,10 +1,11 @@
 
 <?php
 // Conexão com o banco de dados
-require_once '../Class/Database.class.php';
+require_once __DIR__ . '/../Class/Biblioteca.class.php';
+
 
 try {
-    $conexao = new PDO(DSN, USUARIO, SENHA);
+    $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
     $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Consulta para listar as bibliotecas

@@ -1,5 +1,5 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
 
 class Materiais {
     private $id;
@@ -66,7 +66,7 @@ class Materiais {
 
     // CRUD
     public function inserir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "INSERT INTO Materiais (titulo, descricao, tipo, url, categoria_id, biblioteca_id)
                 VALUES (:titulo, :descricao, :tipo, :url, :categoria_id, :biblioteca_id)";
         $comando = $conexao->prepare($sql);
@@ -80,7 +80,7 @@ class Materiais {
     }
 
     public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM Materiais";
         if ($tipo > 0) {
             switch ($tipo) {
@@ -99,7 +99,7 @@ class Materiais {
     }
 
     public function alterar() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "UPDATE Materiais SET
                     titulo = :titulo,
                     descricao = :descricao,
@@ -120,7 +120,7 @@ class Materiais {
     }
 
     public function excluir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM Materiais WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());

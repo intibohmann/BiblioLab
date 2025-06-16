@@ -1,5 +1,6 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
+
 
 class Usuario {
     private $id;
@@ -53,7 +54,7 @@ class Usuario {
 
     // Métodos de persistência
     public function inserir(): bool {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "INSERT INTO Usuarios (nome, email, usuario, senha_hash, tipo) VALUES (:nome, :email, :usuario, :senha_hash, :tipo)";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':nome', $this->getNome());
@@ -65,7 +66,7 @@ class Usuario {
     }
 
     public static function listar($tipo = 0, $info = ''): array {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM Usuarios";
         if ($tipo > 0) {
             switch ($tipo) {
@@ -83,7 +84,7 @@ class Usuario {
     }
 
     public function alterar(): bool {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "UPDATE Usuarios SET nome = :nome, email = :email, usuario = :usuario, senha_hash = :senha_hash, tipo = :tipo WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':nome', $this->getNome());
@@ -96,7 +97,7 @@ class Usuario {
     }
 
     public function excluir(): bool {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM Usuarios WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());

@@ -1,5 +1,6 @@
 <?php
-require_once("Database.class.php");
+require_once __DIR__ . '/Database.class.php';
+
 
 class Categoria {
     private $id;
@@ -47,7 +48,7 @@ class Categoria {
     }
 
     public function inserir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "INSERT INTO Categorias (nome, descricao) VALUES (:nome, :descricao)";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':nome', $this->getNome());
@@ -56,7 +57,7 @@ class Categoria {
     }
 
     public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "SELECT * FROM Categorias";
         if ($tipo > 0) {
             switch ($tipo) {
@@ -73,7 +74,7 @@ class Categoria {
     }
 
     public function alterar() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
         $sql = "UPDATE Categorias SET nome = :nome, descricao = :descricao WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':nome', $this->getNome());
@@ -83,7 +84,7 @@ class Categoria {
     }
 
     public function excluir() {
-        $conexao = new PDO(DSN, USUARIO, SENHA);
+        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
         $sql = "DELETE FROM Categorias WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());
