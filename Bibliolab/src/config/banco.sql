@@ -65,3 +65,6 @@ CREATE TABLE contatos (
     mensagem TEXT NOT NULL,
     data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE Usuarios
+ADD COLUMN foto_perfil VARCHAR(255) DEFAULT NULL;
