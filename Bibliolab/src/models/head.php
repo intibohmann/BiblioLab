@@ -12,6 +12,12 @@
       font-size: 2em;
     }
   </style>
+  <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
+
 </head>
 <body>
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
