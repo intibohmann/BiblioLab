@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <?php include("head.php"); ?>
+<?php include '../views/layouts/head.php' ?>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -87,8 +87,8 @@
             }
         }
     </style>
+<?php include '../views/layouts/Menu.php'; ?>
 </head>
-<?php include("Menu.php"); ?>
 <body>
     <header>
         <h1>Sobre a Biblioteca</h1>

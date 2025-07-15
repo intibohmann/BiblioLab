@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/config.inc.php';
+require_once(__DIR__ . '/../../Config/config.inc.php');
+
 
 class Database {
     private static function abrirConexao() {

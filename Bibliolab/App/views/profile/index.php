@@ -1,24 +1,25 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['usuario_id'])) {
     header("Location: login.php");
     exit;
 }
 
-$servername = "localhost";
+$dsn = "mysql:host=localhost;dbname=biblioteca;charset=utf8mb4";
 $dbUsername = "root";
 $dbPassword = "";
-$dbName = "biblioteca";
-$conn = new mysqli($servername, $dbUsername, $dbPassword, $dbName);
 
-$user_id = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT nome, email, usuario, foto_perfil FROM Usuarios WHERE id = ?");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$usuario = $result->fetch_assoc();
-$stmt->close();
-$conn->close();
+try {
+    $pdo = new PDO($dsn, $dbUsername, $dbPassword, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+    $user_id = $_SESSION['usuario_id'];
+    $stmt = $pdo->prepare("SELECT nome, email, usuario, foto_perfil FROM Usuarios WHERE id = ?");
+    $stmt->execute([$user_id]);
+    $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Erro de conexão: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,108 +27,63 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <title>Meu Perfil</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f3f3;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .foto-perfil {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .foto-perfil img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #ccc;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        input[type="file"] {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-top: 5px;
-        }
-
-        input[type="submit"] {
-            margin-top: 20px;
-            padding: 12px;
-            background: #2575fc;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background: #1a5edb;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
-        <h2>Meu Perfil</h2>
-        <div class="foto-perfil">
-            <img src="<?= $usuario['foto_perfil'] ? 'uploads/' . $usuario['foto_perfil'] : 'uploads/default.png' ?>" alt="Foto de Perfil">
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow mx-auto" style="max-width: 600px;">
+            <div class="card-body p-4">
+                <h3 class="card-title text-center mb-4">Meu Perfil</h3>
+
+                <div class="text-center mb-4">
+                    <img src="<?= !empty($usuario['foto_perfil']) ? '/BiblioLab/Bibliolab/Public/assets/img/' . htmlspecialchars($usuario['foto_perfil']) : 'https://via.placeholder.com/120?text=Sem+Foto' ?>" 
+                         alt="Foto de Perfil" 
+                         class="rounded-circle img-thumbnail" 
+                         style="width: 120px; height: 120px; object-fit: cover;">
+                </div>
+
+                <form action="/BiblioLab/Bibliolab/App/controllers/atualizar_perfil.php" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" name="nome" class="form-control" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($usuario['email']) ?>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nova senha <small class="text-muted">(deixe em branco para não mudar)</small></label>
+                        <input type="password" name="nova_senha" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Foto de perfil</label>
+                        <input type="file" name="foto" class="form-control">
+                    </div>
+
+                    <?php if (!empty($usuario['foto_perfil'])): ?>
+                        <div class="mb-3 text-center">
+                            <a href="/BiblioLab/Bibliolab/App/controllers/remover_foto.php" class="btn btn-danger btn-sm">
+                                Remover Foto
+                            </a>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="d-grid mt-4">
+                        <input type="submit" value="Atualizar Perfil" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
         </div>
-
-        <form action="atualizar_perfil.php" method="POST" enctype="multipart/form-data">
-            <label>Nome:</label>
-            <input type="text" name="nome" value="<?= htmlspecialchars($usuario['nome']) ?>" required>
-
-            <label>Email:</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($usuario['email']) ?>" required>
-
-            <label>Nova senha (deixe em branco para não mudar):</label>
-            <input type="password" name="nova_senha">
-
-            <label>Foto de perfil:</label>
-            <input type="file" name="foto">
-            <?php if ($usuario['foto_perfil']): ?>
-    <div style="margin-top: 12px;">
-        <form action="remover_foto.php" method="POST">
-            <input type="hidden" name="foto_atual" value="<?= $usuario['foto_perfil'] ?>">
-            <button type="submit" style="background-color: #e53935; color: white; padding: 8px 12px; border: none; border-radius: 6px; cursor: pointer;">
-                Remover Foto
-            </button>
-        </form>
     </div>
-<?php endif; ?>
-            <input type="submit" value="Atualizar Perfil">
-        </form>
-    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+

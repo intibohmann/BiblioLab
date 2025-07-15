@@ -1,6 +1,10 @@
-<?php include '../../views/layouts/head.php'; ?>
-<style>
-    body {
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        body {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -115,18 +119,26 @@
             transform: translateY(0);
         }
     }
-</style>
+    </style>
+</head>
 <body>
-<form action="../../../controllers/login.php" method="POST">
+<form action="/BiblioLab/Bibliolab/App/controllers/login.php?action=login" method="POST">
     <h2>Login</h2>
     <label for="usuario">Usuário:</label>
-    <input type="text" class="input is-small" id="usuario" name="usuario" required autocomplete="username">
+    <input type="text" id="usuario" name="usuario" required autocomplete="username">
 
-    <label for="senha_hash">Senha:</label>
-    <input type="password" id="senha_hash" name="senha_hash" required autocomplete="current-password">
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" name="senha" required autocomplete="current-password">
+
+    <label>
+        <input type="checkbox" name="lembrar"> Lembrar-me
+    </label><br><br>
 
     <input type="submit" value="Entrar">
-</form>
 
+    <?php if (isset($erro) && $erro): ?>
+        <div class="login-error"><?= $erro ?></div>
+    <?php endif; ?>
+</form>
 </body>
 </html>

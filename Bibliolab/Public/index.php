@@ -1,7 +1,7 @@
 
 <?php
 // Conexão com o banco de dados
-require_once __DIR__ . '/../Class/Biblioteca.class.php';
+require_once '../App/Models/Biblioteca.class.php';
 
 
 try {
@@ -16,8 +16,8 @@ try {
     echo "Erro ao conectar ou consultar o banco de dados: " . $e->getMessage();
     exit;
 }
-include "head.php";
-include "menu.php";
+include "../App/views/layouts/head.php";
+include "../App/views/layouts/Menu.php";
 ?>
 
 <!DOCTYPE html>

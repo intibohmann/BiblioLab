@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/Database.class.php';
+require_once(__DIR__ . '/../Core/Database.class.php');
+
 
 
 class Biblioteca {
