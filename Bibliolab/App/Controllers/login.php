@@ -1,32 +1,24 @@
 <?php
 session_start();
 
-// Verifica se o usuário já está logado via sessão ou cookie
-if (isset($_SESSION['usuario_id'])) {
-    redirecionar($_SESSION['tipo']);
-}
-
-if (isset($_COOKIE['usuario_id'])) {
-    $_SESSION['usuario_id'] = $_COOKIE['usuario_id'];
-    $_SESSION['usuario'] = $_COOKIE['usuario'];
-    $_SESSION['tipo'] = $_COOKIE['tipo'];
-    redirecionar($_COOKIE['tipo']);
-}
-
 function redirecionar($tipo) {
     if ($tipo === 'admin') {
-        header("Location: /BiblioLab/Bibliolab/Public/admin.php");
+        header("Location: /BiblioLab/Bibliolab/App/views/profile/admin.php");
     } else {
         header("Location: /BiblioLab/Bibliolab/Public/index.php");
     }
     exit;
 }
 
-$erro = null;
+// Se já está logado, redireciona
+if (isset($_SESSION['usuario_id'])) {
+    redirecionar($_SESSION['tipo']);
+}
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $usuario = $_POST['usuario'];
-    $senha = $_POST['senha'];
+// Só processa login se método for POST
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $usuario = $_POST['usuario'] ?? '';
+    $senha = $_POST['senha'] ?? '';
     $lembrar = isset($_POST['lembrar']);
 
     $dsn = "mysql:host=localhost;dbname=biblioteca;charset=utf8";
@@ -38,27 +30,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]);
     } catch (PDOException $e) {
-        die("<div class='login-error'>Erro ao conectar ao banco.</div>");
+        // Em vez de morrer aqui, podemos redirecionar com erro
+        header("Location: /BiblioLab/Bibliolab/App/views/login.php?erro=" . urlencode("Erro ao conectar ao banco."));
+        exit;
     }
 
     $stmt = $pdo->prepare("SELECT * FROM Usuarios WHERE usuario = ?");
     $stmt->execute([$usuario]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($senha, $user['senha_hash'])) {
-        $_SESSION['usuario_id'] = $user['id'];
-        $_SESSION['usuario'] = $user['usuario'];
-        $_SESSION['tipo'] = $user['tipo'];
+   if ($user && password_verify($senha, $user['senha_hash'])) {
+    $_SESSION['usuario_id'] = $user['id'];
+    $_SESSION['usuario'] = $user['usuario'];
+    $_SESSION['tipo'] = $user['tipo'];
 
-        if ($lembrar) {
-            setcookie("usuario_id", $user['id'], time() + 86400 * 7, "/"); // 7 dias
-            setcookie("usuario", $user['usuario'], time() + 86400 * 7, "/");
-            setcookie("tipo", $user['tipo'], time() + 86400 * 7, "/");
-        }
+    redirecionar($_SESSION['tipo']); // Redirecionamento
 
-        redirecionar($user['tipo']);
     } else {
-        $erro = "Usuário ou senha inválidos.";
+        // Login inválido: redireciona para login com erro
+        header("Location: /BiblioLab/Bibliolab/App/views/auth/login.php?erro=" . urlencode("Usuário ou senha inválidos."));
+        exit;
     }
+} else {
+    // Se acessar controller via GET, redireciona para formulário
+    header("Location: /BiblioLab/Bibliolab/App/views/auth/login.php ");
+    exit;
 }
-?>

@@ -1,13 +1,11 @@
 <?php
 require_once(__DIR__ . '/../Core/Database.class.php');
 
-
-
 class Biblioteca {
-    private $id;
-    private $titulo;
-    private $descricao;
-    private $categoria_id;
+    protected $id;
+    protected $titulo;
+    protected $descricao;
+    protected $categoria_id;
 
     public function __construct($id = null, $titulo = "", $descricao = "", $categoria_id = null) {
         $this->id = $id;
@@ -46,15 +44,7 @@ class Biblioteca {
 
     // CRUD
     public function inserir() {
-        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
-        // Verifica se categoria existe
-        $catStmt = $conexao->prepare("SELECT COUNT(*) FROM categorias WHERE id = :categoria_id");
-        $catStmt->bindValue(':categoria_id', $this->getCategoriaId(), PDO::PARAM_INT);
-        $catStmt->execute();
-        $categoriaExiste = $catStmt->fetchColumn();
-        if (!$categoriaExiste) {
-            throw new Exception("Categoria informada não existe. ID informado: " . $this->getCategoriaId());
-        }
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "INSERT INTO Biblioteca (titulo, descricao, categoria_id)
                 VALUES (:titulo, :descricao, :categoria_id)";
         $comando = $conexao->prepare($sql);
@@ -65,43 +55,33 @@ class Biblioteca {
     }
 
     public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
-        $sql = "SELECT * FROM Biblioteca";
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+
+       $sql = "SELECT b.id, b.titulo, b.descricao, b.categoria_id, c.nome AS categoria_nome
+        FROM Biblioteca b
+        JOIN Categorias c ON b.categoria_id = c.id";
+
+
         if ($tipo > 0) {
             switch ($tipo) {
-                case 1: $sql .= " WHERE id = :info ORDER BY id"; break;
-                case 2: $sql .= " WHERE titulo LIKE :info ORDER BY titulo"; $info = '%'.$info.'%'; break;
-                case 3: $sql .= " WHERE descricao LIKE :info ORDER BY descricao"; $info = '%'.$info.'%'; break;
-                case 4: $sql .= " WHERE categoria_id = :info ORDER BY categoria_id"; break;
+                case 1: $sql .= " WHERE b.id = :info ORDER BY b.id"; break;
+                case 2: $sql .= " WHERE b.titulo LIKE :info ORDER BY b.titulo"; $info = '%' . $info . '%'; break;
+                case 3: $sql .= " WHERE b.descricao LIKE :info ORDER BY b.descricao"; $info = '%' . $info . '%'; break;
+                case 4: $sql .= " WHERE b.categoria_id = :info ORDER BY c.nome"; break;
             }
         }
+
         $comando = $conexao->prepare($sql);
         if ($tipo > 0) {
             $comando->bindValue(':info', $info);
         }
+
         $comando->execute();
         return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function alterar() {
-        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
-
-        // Garante que categoria_id é um inteiro
-        $categoriaId = $this->getCategoriaId();
-        if (!is_numeric($categoriaId) || intval($categoriaId) != $categoriaId) {
-            throw new Exception("Categoria informada deve ser um ID numérico. Valor informado: " . $categoriaId);
-        }
-        $categoriaId = intval($categoriaId);
-
-        // Verifica se categoria existe
-        $catStmt = $conexao->prepare("SELECT COUNT(*) FROM categorias WHERE id = :categoria_id");
-        $catStmt->bindValue(':categoria_id', $categoriaId, PDO::PARAM_INT);
-        $catStmt->execute();
-        $categoriaExiste = $catStmt->fetchColumn();
-        if (!$categoriaExiste) {
-            throw new Exception("Categoria informada não existe. ID informado: " . $categoriaId);
-        }
-
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "UPDATE Biblioteca SET
                     titulo = :titulo,
                     descricao = :descricao,
@@ -110,13 +90,13 @@ class Biblioteca {
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':titulo', $this->getTitulo());
         $comando->bindValue(':descricao', $this->getDescricao());
-        $comando->bindValue(':categoria_id', $categoriaId);
+        $comando->bindValue(':categoria_id', $this->getCategoriaId());
         $comando->bindValue(':id', $this->getId());
         return $comando->execute();
     }
 
     public function excluir() {
-        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "DELETE FROM Biblioteca WHERE id = :id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':id', $this->getId());
@@ -124,3 +104,4 @@ class Biblioteca {
     }
 }
 ?>
+

@@ -1,144 +1,87 @@
+<?php
+session_start();
+
+// Se já estiver logado, redireciona direto
+if (isset($_SESSION['usuario_id'])) {
+    header("Location: /BiblioLab/Bibliolab/App/views/profile/admin.php");
+    exit;
+}
+
+// Pega erro via GET para mostrar na view, se existir
+$erro = $_GET['erro'] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        font-family: 'Segoe UI', Arial, sans-serif;
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: #222;
-    }
-
-    form {
-        background: rgba(255, 255, 255, 0.95);
-        padding: 32px 28px 24px 28px;
-        border-radius: 18px;
-        box-shadow: 0 8px 32px rgba(40, 40, 80, 0.18);
-        animation: fadeIn 1s ease-in-out;
-        width: 340px;
-        text-align: center;
-        position: relative;
-    }
-
-    form::before {
-        content: "";
-        position: absolute;
-        top: -18px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #2575fc 60%, #6a11cb 100%);
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(40, 40, 80, 0.10);
-        z-index: 1;
-    }
-
-    form h2 {
-        margin-top: 30px;
-        margin-bottom: 24px;
-        font-size: 1.5rem;
-        color: #2575fc;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 7px;
-        font-weight: 600;
-        color: #444;
-        text-align: left;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 12px 10px;
-        margin-bottom: 18px;
-        border: 1px solid #e0e0e0;
-        border-radius: 7px;
-        box-sizing: border-box;
-        font-size: 1rem;
-        background: #f7f9fa;
-        transition: border 0.2s;
-    }
-
-    input[type="text"]:focus,
-    input[type="password"]:focus {
-        border: 1.5px solid #2575fc;
-        outline: none;
-        background: #fff;
-    }
-
-    input[type="submit"] {
-        background: linear-gradient(90deg, #2575fc 60%, #6a11cb 100%);
-        color: #fff;
-        border: none;
-        padding: 12px 0;
-        border-radius: 7px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 1.1rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        box-shadow: 0 2px 8px rgba(40, 40, 80, 0.08);
-        transition: background 0.3s, transform 0.2s;
-    }
-
-    input[type="submit"]:hover {
-        background: linear-gradient(90deg, #6a11cb 60%, #2575fc 100%);
-        transform: translateY(-2px) scale(1.02);
-    }
-
-    .login-error {
-        color: #e53935;
-        margin-top: 12px;
-        font-size: 1rem;
-        font-weight: 500;
-        text-align: center;
-        background: #fff3f3;
-        border-radius: 5px;
-        padding: 8px 0;
-        border: 1px solid #ffdada;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
+            background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .login-card {
+            animation: fadeIn 1s ease;
+            max-width: 400px;
+            margin: auto;
+            padding: 2rem 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            background: #fff;
         }
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .login-error {
+            animation: shake 0.4s;
+            color: #fff;
+            background: #dc3545;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0);}
+            20% { transform: translateX(-8px);}
+            40% { transform: translateX(8px);}
+            60% { transform: translateX(-8px);}
+            80% { transform: translateX(8px);}
+            100% { transform: translateX(0);}
+        }
     </style>
 </head>
 <body>
-<form action="/BiblioLab/Bibliolab/App/controllers/login.php?action=login" method="POST">
-    <h2>Login</h2>
-    <label for="usuario">Usuário:</label>
-    <input type="text" id="usuario" name="usuario" required autocomplete="username">
-
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" name="senha" required autocomplete="current-password">
-
-    <label>
-        <input type="checkbox" name="lembrar"> Lembrar-me
-    </label><br><br>
-
-    <input type="submit" value="Entrar">
-
-    <?php if (isset($erro) && $erro): ?>
-        <div class="login-error"><?= $erro ?></div>
-    <?php endif; ?>
-</form>
+<div class="login-card shadow">
+    <form action="/BiblioLab/Bibliolab/App/controllers/login.php" method="POST">
+        <h2 class="mb-4 text-center">Login</h2>
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Usuário:</label>
+            <input type="text" id="usuario" name="usuario" required autocomplete="username" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="senha" class="form-label">Senha:</label>
+            <input type="password" id="senha" name="senha" required autocomplete="current-password" class="form-control">
+        </div>
+        <div class="form-check mb-3">
+            <label class="form-check-label" for="cadastro-link">
+                Não tem login?
+                <a href="/BiblioLab/Bibliolab/App/views/auth/Cad_usuario.php" id="cadastro-link">Cadastre-se</a>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        <?php if ($erro): ?>
+            <div class="login-error"><?= htmlspecialchars($erro) ?></div>
+        <?php endif; ?>
+    </form>
+</div>
+<!-- Bootstrap JS (opcional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

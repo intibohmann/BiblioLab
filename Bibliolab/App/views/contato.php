@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Fale Conosco</h2>
         <form action="https://formsubmit.co/BiblioLab2025@gmail.com" method="post" class="help-form">
             <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" value="http://localhost/BiblioLab/Bibliolab/App/views/contato.php">
+            <input type="hidden" name="_next" value="http://localhost/BiblioLab/Bibliolab/Public/index.php">
             <input type="hidden" name="_template" value="box">
 
             <label for="name">Nome:</label>

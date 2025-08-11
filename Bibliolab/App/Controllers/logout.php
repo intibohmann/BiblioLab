@@ -1,6 +1,6 @@
 <?php
 session_start();
+session_unset();
 session_destroy();
-header("Location: ../../Public/index.php");
+header("Location: /BiblioLab/Bibliolab/App/views/auth/login.php");
 exit;
-?>

@@ -63,22 +63,36 @@ class ProgressoEstudo {
         return $comando->execute();
     }
 
-    public static function listar($tipo = 0, $info = '') {
-        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
-        $sql = "SELECT * FROM ProgressoEstudo";
-        if ($tipo > 0) {
-            $sql .= match ($tipo) {
-                1 => " WHERE id = :info ORDER BY id",
-                2 => " WHERE usuario_id = :info ORDER BY usuario_id",
-                3 => " WHERE material_id = :info ORDER BY material_id",
-                default => "",
-            };
-        }
-        $comando = $conexao->prepare($sql);
-        if ($tipo > 0) $comando->bindValue(':info', $info);
-        $comando->execute();
-        return $comando->fetchAll(PDO::FETCH_ASSOC);
+  public static function listar($tipo = 0, $info = '') {
+    $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
+
+    $sql = "SELECT 
+                p.id,
+                p.usuario_id,
+                u.nome AS nome_usuario,
+                p.material_id,
+                m.titulo AS titulo_material,
+                p.percentual_concluido,
+                p.ultima_visualizacao
+            FROM ProgressoEstudo p
+            JOIN Usuarios u ON p.usuario_id = u.id
+            JOIN Materiais m ON p.material_id = m.id";
+
+    if ($tipo > 0) {
+        $sql .= match ($tipo) {
+            1 => " WHERE p.id = :info ORDER BY p.id",
+            2 => " WHERE p.usuario_id = :info ORDER BY u.nome",
+            3 => " WHERE p.material_id = :info ORDER BY m.titulo",
+            default => "",
+        };
     }
+
+    $comando = $conexao->prepare($sql);
+    if ($tipo > 0) $comando->bindValue(':info', $info);
+    $comando->execute();
+    return $comando->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
     public function alterar() {
         $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);

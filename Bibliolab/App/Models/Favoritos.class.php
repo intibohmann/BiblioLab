@@ -1,60 +1,55 @@
 <?php
-require_once(__DIR__ . '/../Core/Database.class.php');
-
-
 
 class Favoritos {
     private $usuario_id;
-    private $material_id;
-    private $data_adicionado;
+    private $biblioteca_id;
 
-    public function __construct($usuario_id = null, $material_id = null, $data_adicionado = null) {
+    public function __construct($usuario_id = null, $biblioteca_id = null) {
         $this->usuario_id = $usuario_id;
-        $this->material_id = $material_id;
-        $this->data_adicionado = $data_adicionado;
+        $this->biblioteca_id = $biblioteca_id;
     }
 
-    // Setters
     public function setUsuarioId($usuario_id) {
         if ($usuario_id < 0) throw new Exception("Usuário inválido");
         $this->usuario_id = $usuario_id;
     }
-    public function setMaterialId($material_id) {
-        if ($material_id < 0) throw new Exception("Material inválido");
-        $this->material_id = $material_id;
-    }
-    public function setDataAdicionado($data_adicionado) {
-        $this->data_adicionado = $data_adicionado;
+
+    public function setBibliotecaId($biblioteca_id) {
+        if ($biblioteca_id < 0) throw new Exception("Biblioteca inválida");
+        $this->biblioteca_id = $biblioteca_id;
     }
 
-    // Getters
-    public function getUsuarioId() { return $this->usuario_id; }
-    public function getMaterialId() { return $this->material_id; }
-    public function getDataAdicionado() { return $this->data_adicionado; }
+    public function getUsuarioId() {
+        return $this->usuario_id;
+    }
 
-    // Adicionar favorito
+    public function getBibliotecaId() {
+        return $this->biblioteca_id;
+    }
+
     public function inserir() {
-        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
-        $sql = "INSERT INTO Favoritos (usuario_id, material_id) VALUES (:usuario_id, :material_id)";
-        $comando = $conexao->prepare($sql);
-        $comando->bindValue(':usuario_id', $this->getUsuarioId());
-        $comando->bindValue(':material_id', $this->getMaterialId());
-        return $comando->execute();
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+        if (!self::existe($this->usuario_id, $this->biblioteca_id)) {
+            $sql = "INSERT INTO Favoritos (usuario_id, biblioteca_id) VALUES (:usuario_id, :biblioteca_id)";
+            $comando = $conexao->prepare($sql);
+            $comando->bindValue(':usuario_id', $this->usuario_id);
+            $comando->bindValue(':biblioteca_id', $this->biblioteca_id);
+            return $comando->execute();
+        }
+        return false;
     }
 
-    // Remover favorito
     public function excluir() {
-        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
-        $sql = "DELETE FROM Favoritos WHERE usuario_id = :usuario_id AND material_id = :material_id";
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+        $sql = "DELETE FROM Favoritos WHERE usuario_id = :usuario_id AND biblioteca_id = :biblioteca_id";
         $comando = $conexao->prepare($sql);
-        $comando->bindValue(':usuario_id', $this->getUsuarioId());
-        $comando->bindValue(':material_id', $this->getMaterialId());
+        $comando->bindValue(':usuario_id', $this->usuario_id);
+        $comando->bindValue(':biblioteca_id', $this->biblioteca_id);
         return $comando->execute();
     }
 
-    // Listar favoritos de um usuário
     public static function listarPorUsuario($usuario_id) {
-        $conexao = new PDO(DSN, username: DB_USER, password: DB_PASSWORD);
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "SELECT * FROM Favoritos WHERE usuario_id = :usuario_id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $usuario_id);
@@ -62,13 +57,12 @@ class Favoritos {
         return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Verificar se um material está nos favoritos de um usuário
-    public static function existe($usuario_id, $material_id) {
-        $conexao = new PDO(DSN,  username: DB_USER, password: DB_PASSWORD);
-        $sql = "SELECT COUNT(*) FROM Favoritos WHERE usuario_id = :usuario_id AND material_id = :material_id";
+    public static function existe($usuario_id, $biblioteca_id) {
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+        $sql = "SELECT COUNT(*) FROM Favoritos WHERE usuario_id = :usuario_id AND biblioteca_id = :biblioteca_id";
         $comando = $conexao->prepare($sql);
         $comando->bindValue(':usuario_id', $usuario_id);
-        $comando->bindValue(':material_id', $material_id);
+        $comando->bindValue(':biblioteca_id', $biblioteca_id);
         $comando->execute();
         return $comando->fetchColumn() > 0;
     }

@@ -8,5 +8,3 @@ define('DB_NAME', 'biblioteca');
 define('DB_CHARSET', 'utf8');
 
 define('DSN', 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET);
-
-?>

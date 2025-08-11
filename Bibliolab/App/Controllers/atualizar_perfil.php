@@ -1,51 +1,42 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: ../../login.php");
-    exit;
+require_once(__DIR__ . '/../../core/Database.class.php');
+
+$id = $_POST['id'];
+$nome = $_POST['nome'];
+$email = $_POST['email'];
+$senha = !empty($_POST['senha']) ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : null;
+
+// Foto de perfil
+$fotoNome = $_FILES['foto']['name'] ?? '';
+$fotoTmp = $_FILES['foto']['tmp_name'] ?? '';
+$destino = '';
+
+if (!empty($fotoNome)) {
+    $ext = pathinfo($fotoNome, PATHINFO_EXTENSION);
+    $fotoFinal = 'perfil_' . $id . '.' . $ext;
+    $destino = __DIR__ . '/../../Public/assets/img/' . $fotoFinal;
+    move_uploaded_file($fotoTmp, $destino);
+} else {
+    $fotoFinal = $_SESSION['usuario']['foto']; // mantém a foto anterior
 }
 
-$dsn = "mysql:host=localhost;dbname=biblioteca;charset=utf8mb4";
-$dbUsername = "root";
-$dbPassword = "";
+// Atualiza banco
+$db = Database::conectar();
+$sql = "UPDATE Usuarios SET nome = ?, email = ?, " . ($senha ? "senha = ?, " : "") . "foto = ? WHERE id = ?";
+$stmt = $db->prepare($sql);
 
-try {
-    $pdo = new PDO($dsn, $dbUsername, $dbPassword, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
+$params = [$nome, $email];
+if ($senha) $params[] = $senha;
+$params[] = $fotoFinal;
+$params[] = $id;
 
-    $id = $_SESSION['usuario_id'];
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $nova_senha = $_POST['nova_senha'];
-
-    $query = "UPDATE Usuarios SET nome = ?, email = ?";
-    $params = [$nome, $email];
-
-    if (!empty($nova_senha)) {
-        $senha_hash = password_hash($nova_senha, PASSWORD_DEFAULT);
-        $query .= ", senha = ?";
-        $params[] = $senha_hash;
-    }
-
-    // Foto de perfil
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {
-        $nomeFoto = uniqid() . '_' . basename($_FILES['foto']['name']);
-        $destino = "../../../Public/assets/img/{$nomeFoto}";
-        move_uploaded_file($_FILES['foto']['tmp_name'], $destino);
-        $query .= ", foto_perfil = ?";
-        $params[] = $nomeFoto;
-    }
-
-    $query .= " WHERE id = ?";
-    $params[] = $id;
-
-    $stmt = $pdo->prepare($query);
-    $stmt->execute($params);
-
-    header("Location: /BiblioLab/Bibliolab/App/views/profile/index.php");
-    exit;
-
-} catch (PDOException $e) {
-    die("Erro: " . $e->getMessage());
+if ($stmt->execute($params)) {
+    $_SESSION['usuario']['nome'] = $nome;
+    $_SESSION['usuario']['email'] = $email;
+    $_SESSION['usuario']['foto'] = $fotoFinal;
+    echo json_encode(['status' => 'ok', 'mensagem' => 'Perfil atualizado com sucesso!']);
+} else {
+    echo json_encode(['status' => 'erro', 'mensagem' => 'Erro ao atualizar perfil.']);
 }
+?>
