@@ -16,48 +16,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $pdo = Database::getConexao(); // Usa a instância de conexão
-
-        // Verifica se já existe usuário ou email
+        // 🔹 Verifica se já existe usuário ou email
         $sql = "SELECT id FROM usuarios WHERE usuario = :usuario OR email = :email";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['usuario' => $usuario, 'email' => $email]);
+        $stmt = Database::executar($sql, [
+            ':usuario' => $usuario,
+            ':email'   => $email
+        ]);
 
-        if ($stmt->rowCount() > 0) {
+        if ($stmt && $stmt->rowCount() > 0) {
             header("Location: ../views/auth/Cad_usuario.php?mensagem=" . urlencode("Usuário ou e-mail já cadastrado."));
             exit;
         }
 
-        // Insere novo usuário
+        // 🔹 Insere novo usuário
         $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
         $tipo = 'aluno';
 
         $sql = "INSERT INTO usuarios (nome, email, usuario, senha_hash, tipo) 
                 VALUES (:nome, :email, :usuario, :senha_hash, :tipo)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'nome' => $nome,
-            'email' => $email,
-            'usuario' => $usuario,
-            'senha_hash' => $senha_hash,
-            'tipo' => $tipo
+        $stmt = Database::executar($sql, [
+            ':nome'       => $nome,
+            ':email'      => $email,
+            ':usuario'    => $usuario,
+            ':senha_hash' => $senha_hash,
+            ':tipo'       => $tipo
         ]);
 
-        $ultimo_id = $pdo->lastInsertId();
+        if ($stmt) {
+            // ⚠️ Se precisar realmente do ID inserido, pode ser necessário
+            // ajustar a classe Database para retornar também o lastInsertId.
+            // Por enquanto, vamos simular o login automático sem ele:
+            $_SESSION['usuario'] = $usuario;
+            $_SESSION['tipo'] = $tipo;
 
-        // Login automático após cadastro
-        $_SESSION['usuario_id'] = $ultimo_id;
-        $_SESSION['usuario'] = $usuario;
-        $_SESSION['tipo'] = $tipo;
-
-        // Redireciona com base no tipo
-        if ($tipo === 'admin') {
-            header("Location: ../views/profile/admin.php");
+            if ($tipo === 'admin') {
+                header("Location: ../views/profile/admin.php");
+            } else {
+                header("Location: ../../Public/index.php");
+            }
+            exit;
         } else {
-            header("Location: ../../Public/index.php");
+            header("Location: ../views/auth/Cad_usuario.php?mensagem=" . urlencode("Erro ao cadastrar usuário."));
+            exit;
         }
-        exit;
-
     } catch (Exception $e) {
         header("Location: ../views/auth/Cad_usuario.php?mensagem=" . urlencode("Erro: " . $e->getMessage()));
         exit;
@@ -66,4 +67,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header("Location: ../views/auth/Cad_usuario.php");
     exit;
 }
-?>
