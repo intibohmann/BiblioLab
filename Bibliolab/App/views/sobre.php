@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<?php include '../views/layouts/head.php' ?>
     <style>
         body {
             font-family: Arial, sans-serif;

@@ -11,7 +11,7 @@ include("head.php");
         <li><a href="/BiblioLab/Bibliolab/App/views/contato.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Contato</a></li>
         
     <?php if (!isset($_SESSION['usuario_id'])): ?>
-        <li><a href="/BiblioLab/Bibliolab/App/views/auth/cad_usuario.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Cadastre-se</a></li>
+        <li><a href="/BiblioLab/Bibliolab/App/views/auth/Cad_usuario.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Cadastre-se</a></li>
         <li><a href="/BiblioLab/Bibliolab/App/views/auth/login.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Login</a></li>
     <?php elseif ($_SESSION['tipo'] === 'admin'): ?>
         <li><a href="/BiblioLab/Bibliolab/App/views/profile/admin.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Painel do Administrador</a></li>
