@@ -14,7 +14,7 @@ class Materiais extends Biblioteca {
         $this->biblioteca_id = $biblioteca_id;
     }
 
-    // Setters e Getters adicionais
+    // ====== Setters e Getters ======
     public function setTipo($tipo) {
         $tipos = ['ebook', 'video', 'artigo'];
         if (!in_array($tipo, $tipos)) throw new Exception("Tipo inválido");
@@ -22,10 +22,7 @@ class Materiais extends Biblioteca {
     }
     public function getTipo() { return $this->tipo; }
 
-    public function setUrl($url) {
-        if (empty($url)) throw new Exception("URL obrigatória");
-        $this->url = $url;
-    }
+    public function setUrl($url) { $this->url = $url; }
     public function getUrl() { return $this->url; }
 
     public function setBibliotecaId($biblioteca_id) {
@@ -38,6 +35,7 @@ class Materiais extends Biblioteca {
         return parent::__toString() . " - Tipo: $this->tipo - URL: $this->url - Biblioteca: $this->biblioteca_id";
     }
 
+    // ====== CRUD ======
     public function inserir() {
         $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "INSERT INTO Materiais (titulo, descricao, tipo, url, categoria_id, biblioteca_id)
@@ -54,7 +52,7 @@ class Materiais extends Biblioteca {
 
     public static function listar($tipo = 0, $info = '') {
         $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
-        $sql = "SELECT m.id, m.titulo, m.descricao, m.tipo, m.url,
+        $sql = "SELECT m.*, 
                        c.nome AS categoria_nome,
                        b.titulo AS biblioteca_nome
                 FROM Materiais m
@@ -80,6 +78,15 @@ class Materiais extends Biblioteca {
         return $comando->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public static function buscarPorId($id) {
+        $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+        $sql = "SELECT * FROM Materiais WHERE id = :id";
+        $comando = $conexao->prepare($sql);
+        $comando->bindValue(':id', $id, PDO::PARAM_INT);
+        $comando->execute();
+        return $comando->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function alterar() {
         $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "UPDATE Materiais SET
@@ -97,7 +104,7 @@ class Materiais extends Biblioteca {
         $comando->bindValue(':url', $this->getUrl());
         $comando->bindValue(':categoria_id', $this->getCategoriaId());
         $comando->bindValue(':biblioteca_id', $this->getBibliotecaId());
-        $comando->bindValue(':id', $this->getId());
+        $comando->bindValue(':id', $this->getId(), PDO::PARAM_INT);
         return $comando->execute();
     }
 
@@ -105,9 +112,17 @@ class Materiais extends Biblioteca {
         $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
         $sql = "DELETE FROM Materiais WHERE id = :id";
         $comando = $conexao->prepare($sql);
-        $comando->bindValue(':id', $this->getId());
+        $comando->bindValue(':id', $this->getId(), PDO::PARAM_INT);
         return $comando->execute();
+    }
+
+    // ====== Extra: decidir se é insert ou update ======
+    public function salvarOuAlterar() {
+        if ($this->getId()) {
+            return $this->alterar();
+        } else {
+            return $this->inserir();
+        }
     }
 }
 ?>
-

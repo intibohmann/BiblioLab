@@ -31,7 +31,12 @@ include "../App/views/layouts/head.php";
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliotecas Cadastradas</title>
     <link rel="stylesheet" href="css/idx.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
 
@@ -40,9 +45,29 @@ include "../App/views/layouts/head.php";
         <h1>Bibliotecas Cadastradas</h1>
 
         <?php if (isset($_SESSION['usuario_id'])): ?>
-            <a href="../App/views/main/cadastro_biblioteca.php" class="btn btn-outline-primary btn-lg">
-                <i class="bi bi-plus-circle"></i> Nova Biblioteca
-            </a>
+            <!-- Dropdown de cadastro -->
+            <div class="dropdown">
+                <button class="btn btn-outline-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-plus-circle"></i> Cadastros
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <a class="dropdown-item" href="../App/views/main/cadastro_material.php">
+                            <i class="bi bi-file-earmark-plus"></i> Cadastrar Material
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="../App/views/main/cadastro_biblioteca.php">
+                            <i class="bi bi-folder-plus"></i> Cadastrar Biblioteca
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="../App/views/main/cadastro_categoria.php">
+                            <i class="bi bi-tags"></i> Cadastrar Categoria
+                        </a>
+                    </li>
+                </ul>
+            </div>
         <?php endif; ?>
     </div>
 
@@ -58,7 +83,7 @@ include "../App/views/layouts/head.php";
 
                             <div class="mt-auto">
                                 <div class="d-grid gap-2">
-                                    <a href="abrir_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                    <a href="../App/views/biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-folder2-open"></i> Abrir Biblioteca
                                     </a>
                                     <a href="chat_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-secondary btn-sm">
@@ -91,6 +116,7 @@ include "../App/views/layouts/head.php";
     <?php endif; ?>
 </div>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

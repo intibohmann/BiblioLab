@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <?php include("../layouts/head.php"); ?>
-
-
-
 <div class="container-fluid">
     <?php include("../layouts/MenuLateral.php"); ?>
 
@@ -35,6 +32,5 @@
         </form>
     </main>
 </div>
-
 </body>
 </html>

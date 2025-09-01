@@ -115,7 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-    <?php include("../views/layouts/Menu.php"); ?>
     <div class="form-container">
         <h2>Fale Conosco</h2>
         <form action="https://formsubmit.co/BiblioLab2025@gmail.com" method="post" class="help-form">

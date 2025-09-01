@@ -21,7 +21,7 @@
         </li>
         <li class="nav-item mt-4">
           <a class="nav-link btn btn-outline-secondary w-100" href="../../../Public/index.php">
-            Voltar ao Index
+            Voltar ao Início
           </a>
         </li>
       </ul>

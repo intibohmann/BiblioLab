@@ -1,42 +1,82 @@
 <?php
 session_start();
-require_once(__DIR__ . '/../../core/Database.class.php');
+require_once(__DIR__ . '/../../Config/config.inc.php');
 
-$id = $_POST['id'];
-$nome = $_POST['nome'];
-$email = $_POST['email'];
-$senha = !empty($_POST['senha']) ? password_hash($_POST['senha'], PASSWORD_DEFAULT) : null;
+header('Content-Type: application/json');
 
-// Foto de perfil
-$fotoNome = $_FILES['foto']['name'] ?? '';
-$fotoTmp = $_FILES['foto']['tmp_name'] ?? '';
-$destino = '';
-
-if (!empty($fotoNome)) {
-    $ext = pathinfo($fotoNome, PATHINFO_EXTENSION);
-    $fotoFinal = 'perfil_' . $id . '.' . $ext;
-    $destino = __DIR__ . '/../../Public/assets/img/' . $fotoFinal;
-    move_uploaded_file($fotoTmp, $destino);
-} else {
-    $fotoFinal = $_SESSION['usuario']['foto']; // mantém a foto anterior
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["sucesso" => false, "mensagem" => "Método inválido."]);
+    exit;
 }
 
-// Atualiza banco
-$db = Database::conectar();
-$sql = "UPDATE Usuarios SET nome = ?, email = ?, " . ($senha ? "senha = ?, " : "") . "foto = ? WHERE id = ?";
-$stmt = $db->prepare($sql);
+$id     = $_POST['id'] ?? null;
+$nome   = trim($_POST['nome'] ?? '');
+$email  = trim($_POST['email'] ?? '');
+$senha  = $_POST['senha'] ?? '';
+$foto   = $_FILES['foto'] ?? null;  
 
-$params = [$nome, $email];
-if ($senha) $params[] = $senha;
-$params[] = $fotoFinal;
-$params[] = $id;
 
-if ($stmt->execute($params)) {
-    $_SESSION['usuario']['nome'] = $nome;
-    $_SESSION['usuario']['email'] = $email;
-    $_SESSION['usuario']['foto'] = $fotoFinal;
-    echo json_encode(['status' => 'ok', 'mensagem' => 'Perfil atualizado com sucesso!']);
-} else {
-    echo json_encode(['status' => 'erro', 'mensagem' => 'Erro ao atualizar perfil.']);
+
+if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['id'] != $id) {
+    echo json_encode(["sucesso" => false, "mensagem" => "Acesso não autorizado."]);
+    exit;
+}
+
+if (empty($nome) || empty($email)) {
+    echo json_encode(["sucesso" => false, "mensagem" => "Preencha todos os campos obrigatórios."]);
+    exit;
+}
+
+try {
+    $pdo = new PDO(DSN, DB_USER, DB_PASSWORD, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+
+    $campos = ["nome = :nome", "email = :email"];
+    $params = [":nome" => $nome, ":email" => $email, ":id" => $id];
+
+    if (!empty($senha)) {
+        $campos[] = "senha_hash = :senha";
+        $params[":senha"] = password_hash($senha, PASSWORD_DEFAULT);
+    }
+
+    if (!empty($foto['name'])) {
+        $extensao = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
+        $permitidas = ['jpg', 'jpeg', 'png', 'gif'];
+
+        if (!in_array($extensao, $permitidas)) {
+            echo json_encode(["sucesso" => false, "mensagem" => "Formato de imagem inválido."]);
+            exit;
+        }
+
+        $nomeArquivo = uniqid('perfil_', true) . "." . $extensao;
+        $caminhoDestino = __DIR__ . '/../../Public/assets/img/' . $nomeArquivo;
+
+        if (move_uploaded_file($foto['tmp_name'], $caminhoDestino)) {
+            $campos[] = "foto_perfil = :foto";  
+            $params[":foto"] = $nomeArquivo;
+
+            // Atualiza sessão para refletir a nova foto
+            $_SESSION['usuario']['foto_perfil'] = $nomeArquivo;  
+        } else {
+            echo json_encode(["sucesso" => false, "mensagem" => "Erro ao enviar a foto."]);
+            exit;
+        }
+    }
+
+    $sql = "UPDATE Usuarios SET " . implode(', ', $campos) . " WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    // Atualiza dados da sessão
+    $_SESSION['usuario']['nome'] = $nome;    
+    $_SESSION['usuario']['email'] = $email;  
+    if (!empty($senha)) {
+        $_SESSION['usuario']['senha_hash'] = $params[":senha"];
+    }
+
+    echo json_encode(["sucesso" => true, "mensagem" => "Perfil atualizado com sucesso!"]);
+} catch (Exception $e) {
+    echo json_encode(["sucesso" => false, "mensagem" => "Erro: " . $e->getMessage()]);
 }
 ?>

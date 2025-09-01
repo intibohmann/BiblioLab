@@ -87,7 +87,6 @@
             }
         }
     </style>
-<?php include '../views/layouts/Menu.php'; ?>
 </head>
 <body>
     <header>
