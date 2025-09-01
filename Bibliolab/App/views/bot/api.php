@@ -1,8 +1,8 @@
 <?php
 header('Content-Type: application/json');
 
-// Sua chave da API só aqui no servidor
-$API_KEY = "AIzaSyBvlSArFMNS1cTVbt-3RsWM4pEPtKOtavE";
+// Sua chave da API 
+$API_KEY = "";
 
 // Recebe o histórico do front-end
 $input = json_decode(file_get_contents('php://input'), true);
