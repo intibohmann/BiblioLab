@@ -1,8 +1,8 @@
 const chatBody = document.getElementById("chat-body");
-let historico = [
-  { role: "model", parts: [{ text: "Olá! Eu sou seu assistente. Como posso ajudar hoje?" }] }
-];
 
+let historico = [];
+
+// Função para formatar Markdown básico
 function formatarMarkdown(texto) {
   return texto
     .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
@@ -11,6 +11,7 @@ function formatarMarkdown(texto) {
     .replace(/\n/g, "<br>");
 }
 
+// Função para adicionar mensagens no chat
 function adicionarMensagem(texto, tipo, loading = false) {
   const msg = document.createElement("div");
   msg.classList.add("chat-message", tipo === "user" ? "user-message" : "bot-message");
@@ -20,6 +21,14 @@ function adicionarMensagem(texto, tipo, loading = false) {
   return msg;
 }
 
+// Bot já se apresenta sozinho ao carregar a página
+window.onload = () => {
+  const msg = "Olá! Eu sou o **Pingo**, seu assistente virtual 😃 Como posso ajudar hoje?";
+  adicionarMensagem(msg, "bot");
+  historico.push({ role: "model", parts: [{ text: msg }] });
+};
+
+// Função principal de envio de mensagens
 async function perguntar() {
   const input = document.getElementById("pergunta");
   const pergunta = input.value.trim();
