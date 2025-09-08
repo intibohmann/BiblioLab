@@ -46,7 +46,7 @@ function youtubeEmbedUrl($url) {
         return $url;
     }
     if (preg_match('%(?:youtube\.com/watch\?v=|youtu\.be/)([a-zA-Z0-9_-]{11})%', $url, $matches)) {
-        return 'https://www.youtube.com/embed/' . $matches[1];
+        return "https://www.youtube.com/embed/{$matches[1]}";
     }
     return $url;
 }
@@ -107,17 +107,17 @@ function youtubeEmbedUrl($url) {
 
                                 <!-- Botões Editar / Excluir -->
                                 <div class="mt-3">
-                                    <a href="../Views/cadastro_material.php?id=<?= $material['id'] ?>" 
-                                       class="btn btn-warning btn-sm">
-                                        <i class="bi bi-pencil"></i> Editar
+                                <a href="editar_material.php?id=<?= $material['id'] ?>&bib_id=<?= $id ?>" 
+                                    class="btn btn-warning btn-sm">
+                                     <i class="bi bi-pencil"></i> Editar 
                                     </a>
+                                
                                     <a href="../Controllers/excluir_material.php?id=<?= $material['id'] ?>&bib_id=<?= $id ?>" 
                                        class="btn btn-danger btn-sm"
                                        onclick="return confirm('Tem certeza que deseja excluir este material?')">
                                         <i class="bi bi-trash"></i> Excluir
                                     </a>
                                 </div>
-
                             </div>
                         </div>
                     </div>

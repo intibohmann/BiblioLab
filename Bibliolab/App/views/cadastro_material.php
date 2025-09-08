@@ -1,7 +1,7 @@
 <?php
-require_once("../../Models/Materiais.class.php");
-require_once("../../Models/Categorias.class.php");
-require_once("../../Models/Biblioteca.class.php");
+require_once("../Models/Materiais.class.php");
+require_once("../Models/Categorias.class.php");
+require_once("../Models/Biblioteca.class.php");
 
 // Recebe o ID do material (para edição)
 $material = null;
@@ -12,7 +12,7 @@ if (isset($_GET['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-<?php include("../layouts/head.php"); ?>
+<?php include("../views/layouts/head.php"); ?>
 
 <script>
 function exibirCamposMaterial() {
@@ -37,12 +37,12 @@ function validarForm(event) {
 
 <body>
 <div class="container-fluid">
-    <?php include("../layouts/MenuLateral.php"); ?>
+    <?php include("../views/layouts/MenuLateral.php"); ?>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <h1 class="mt-4 mb-4"><?= $material ? "Editar Material" : "Cadastrar Material" ?></h1>
 
-        <form action="../../Controllers/salvar_material.php" method="post" enctype="multipart/form-data" class="mb-4" onsubmit="return validarForm(event)">
+        <form action="BiblioLab/Bibliolab/App/Controllers/salvar_material.php" method="post" enctype="multipart/form-data" class="mb-4" onsubmit="return validarForm(event)">
             <?php if ($material): ?>
                 <input type="hidden" name="id" value="<?= $material['id'] ?>">
             <?php endif; ?>

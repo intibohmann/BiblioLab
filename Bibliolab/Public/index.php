@@ -52,7 +52,7 @@ include "../App/views/layouts/head.php";
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                     <li>
-                        <a class="dropdown-item" href="../App/views/main/cadastro_material.php">
+                        <a class="dropdown-item" href="../App/views/cadastro_material.php">
                             <i class="bi bi-file-earmark-plus"></i> Cadastrar Material
                         </a>
                     </li>

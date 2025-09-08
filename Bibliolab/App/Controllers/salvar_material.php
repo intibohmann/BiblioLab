@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         // Salva ou altera
         if ($material->salvarOuAlterar()) {
-            header("Location: /Bibliolab/Bibliolab/Public/index.php");
+           header("Location: /Bibliolab/Bibliolab/App/views/biblioteca.php?id=" . $biblioteca_id);
             exit;
         } else {
             echo "<div class='alert alert-danger m-4'>Erro ao salvar material. <a href='../Views/cadastro_material.php'>Tentar novamente</a></div>";
