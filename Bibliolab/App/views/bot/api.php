@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 // chave da API 
-$API_KEY = "chave aqui";
+$API_KEY = "";
 
 // Recebe o histórico do front-end
 $input = json_decode(file_get_contents('php://input'), true);

@@ -16,6 +16,7 @@ include("head.php");
     <?php elseif ($_SESSION['tipo'] === 'admin'): ?>
         <li><a href="/BiblioLab/Bibliolab/App/views/profile/admin.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Painel do Administrador</a></li>
         <li><a href="/BiblioLab/Bibliolab/App/views/profile/index.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Meu Perfil</a></li>
+        <li><a href="/BiblioLab/Bibliolab/App/views/bot/index.html" style="color: black; text-decoration: none; transition: color 0.3s ease;">Chatbot para ajudar</a></li>
         <li><a href="/BiblioLab/Bibliolab/App/Controllers/logout.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Sair</a></li>
     <?php else: ?>
         <li><a href="/BiblioLab/Bibliolab/App/views/profile/index.php" style="color: black; text-decoration: none; transition: color 0.3s ease;">Meu Perfil</a></li>
