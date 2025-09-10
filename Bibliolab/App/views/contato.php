@@ -135,6 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <textarea id="message" name="message" rows="5" required></textarea>
            
             <button type="submit">Enviar</button>
+            <br>
+            <a href="/BiblioLab/Bibliolab/Public/index.php" style="display:inline-block;margin-top:12px;color:#0074D9;text-decoration:none;font-weight:500;">&#8592; Voltar para o início</a>
         </form>
         <?php if (!empty($mensagem)): ?>
             <div class="mensagem"><?php echo htmlspecialchars($mensagem); ?></div>

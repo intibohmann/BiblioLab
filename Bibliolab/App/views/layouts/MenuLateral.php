@@ -5,12 +5,12 @@
     <div class="position-sticky pt-3">
       <ul class="nav flex-column">
         <li class="nav-item mb-2">
-          <a class="nav-link btn btn-outline-primary w-100" href="../main/cadastro_categoria.php">
+          <a class="nav-link btn btn-outline-primary w-100" href="/BiblioLab/Bibliolab/App/views/main/cadastro_categoria.php">
             Cadastrar Categoria
           </a>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link btn btn-outline-primary w-100" href="../main/cadastro_biblioteca.php">
+          <a class="nav-link btn btn-outline-primary w-100" href="/BiblioLab/Bibliolab/App/views/main/cadastro_biblioteca.php">
             Cadastrar Biblioteca
           </a>
         </li>
@@ -20,7 +20,7 @@
           </a>
         </li>
         <li class="nav-item mt-4">
-          <a class="nav-link btn btn-outline-secondary w-100" href="../../../Public/index.php">
+          <a class="nav-link btn btn-outline-secondary w-100" href="/BiblioLab/Bibliolab/Public/index.php">
             Voltar ao Início
           </a>
         </li>
