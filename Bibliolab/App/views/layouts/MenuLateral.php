@@ -15,7 +15,7 @@
           </a>
         </li>
         <li class="nav-item mb-2">
-          <a class="nav-link btn btn-outline-primary w-100" href="../main/cadastro_material.php">
+          <a class="nav-link btn btn-outline-primary w-100" href="../cadastro_material.php">
             Cadastrar Material
           </a>
         </li>

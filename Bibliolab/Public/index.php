@@ -66,6 +66,11 @@ include "../App/views/layouts/head.php";
                             <i class="bi bi-tags"></i> Cadastrar Categoria
                         </a>
                     </li>
+                      <li>
+                        <a class="dropdown-item" href="../App/views/editar_categoria.php">
+                            <i class="bi bi-tags"></i> Editar Categoria
+                        </a>
+                    </li>
                 </ul>
             </div>
         <?php endif; ?>
@@ -86,9 +91,19 @@ include "../App/views/layouts/head.php";
                                     <a href="../App/views/biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-folder2-open"></i> Abrir Biblioteca
                                     </a>
-                                    <a href="chat_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-secondary btn-sm">
+                                    <a href="/BiblioLab/Bibliolab/App/views/chat_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-outline-secondary btn-sm">
                                         <i class="bi bi-chat-left-dots"></i> Chat da Biblioteca
                                     </a>
+                                   <a href="../App/Controllers/excluir_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-danger"
+                                        onclick="return confirm('Tem certeza que deseja excluir esta biblioteca?')">
+                                        <i class="bi bi-trash"></i> Excluir Biblioteca
+                                    </a>
+
+                                    <a href="/BiblioLab/Bibliolab/App/views/editar_biblioteca.php?id=<?= $biblioteca['id'] ?>" class="btn btn-warning btn-sm">
+                                        <i class="bi bi-pencil"></i> Editar Biblioteca
+                                            </a>
+
+
                                     <form method="post" action="../App/Controllers/favorito_controller.php">
                                         <input type="hidden" name="biblioteca_id" value="<?= $biblioteca['id'] ?>">
                                         <?php

@@ -1,99 +1,70 @@
 <?php
 session_start();
-require_once(__DIR__ . '/../../../Config/config.inc.php');
-require_once(__DIR__ . '/../../Models/Usuario.class.php');
 
-header('Content-Type: application/json');
+require_once(__DIR__ . '/../Models/Usuarios.class.php');
+require_once(__DIR__ . '/../../Config/config.inc.php');
 
-// Verifica método POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(["sucesso" => false, "mensagem" => "Método inválido."]);
+// Garante que o usuário está logado
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: ../views/login.php?erro=1");
     exit;
 }
 
-// Captura dados do formulário
-$id     = $_POST['id'] ?? null;
-$nome   = trim($_POST['nome'] ?? '');
-$email  = trim($_POST['email'] ?? '');
-$senha  = $_POST['senha'] ?? '';
-$foto   = $_FILES['foto'] ?? null;
-
-// Valida ID
-if (empty($id) || !is_numeric($id)) {
-    echo json_encode(["sucesso" => false, "mensagem" => "ID de usuário inválido."]);
-    exit;
-}
-
-// Verifica sessão
-if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_id'] != $id) {
-    echo json_encode(["sucesso" => false, "mensagem" => "Acesso não autorizado."]);
-    exit;
-}
-
-// Campos obrigatórios
-if (empty($nome) || empty($email)) {
-    echo json_encode(["sucesso" => false, "mensagem" => "Preencha todos os campos obrigatórios."]);
-    exit;
-}
+$id_usuario = $_SESSION['id_usuario'];
 
 try {
-    // Pega os dados atuais do usuário
-    $dados = Usuario::listar(1, $id);
-    if (!$dados) {
-        echo json_encode(["sucesso" => false, "mensagem" => "Usuário não encontrado."]);
-        exit;
-    }
+    // Atualizar dados básicos
+    if (!empty($_POST['nome']) && !empty($_POST['email'])) {
+        $usuario = new Usuario(
+            $id_usuario,
+            $_POST['nome'],
+            $_POST['email'],
+            $_POST['usuario'] ?? "", // caso exista no form
+            "", // senha só se mudar
+            "aluno" // ou pega da sessão se preferir
+        );
 
-    $usuario = new Usuario(
-        $dados[0]['id'],
-        $nome,
-        $email,
-        $dados[0]['usuario'],
-        $dados[0]['senha_hash'],
-        $dados[0]['tipo'],
-        $dados[0]['foto_perfil'],
-        $dados[0]['data_cadastro']
-    );
-
-    // Atualiza senha se preenchida
-    if (!empty($senha)) {
-        $usuario->setSenhaHash(password_hash($senha, PASSWORD_DEFAULT));
-    }
-
-    // Atualiza foto se enviada
-    if (!empty($foto['name']) && $foto['error'] === 0) {
-        $extensao = strtolower(pathinfo($foto['name'], PATHINFO_EXTENSION));
-        $permitidas = ['jpg', 'jpeg', 'png', 'gif'];
-
-        if (!in_array($extensao, $permitidas)) {
-            echo json_encode(["sucesso" => false, "mensagem" => "Formato de imagem inválido."]);
-            exit;
+        // Senha nova (opcional)
+        if (!empty($_POST['senha'])) {
+            $senha_hash = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+            $usuario->setSenhaHash($senha_hash);
+        } else {
+            // Recupera senha atual do banco para não perder
+            $dados = Usuario::listar(1, $id_usuario);
+            if ($dados && isset($dados[0]['senha_hash'])) {
+                $usuario->setSenhaHash($dados[0]['senha_hash']);
+            }
         }
 
-        $nomeArquivo = uniqid('perfil_', true) . "." . $extensao;
-        $caminhoDestino = __DIR__ . '/../../Public/assets/img/' . $nomeArquivo;
+        // Foto de perfil (upload)
+        if (!empty($_FILES['foto']['name'])) {
+            $foto_nome = uniqid() . "_" . basename($_FILES['foto']['name']);
+            $destino = __DIR__ . '/../../public/assets/img/' . $foto_nome;
 
-        if (!move_uploaded_file($foto['tmp_name'], $caminhoDestino)) {
-            echo json_encode(["sucesso" => false, "mensagem" => "Erro ao enviar a foto."]);
-            exit;
+            if (move_uploaded_file($_FILES['foto']['tmp_name'], $destino)) {
+                $usuario->setFotoPerfil($foto_nome);
+            } else {
+                throw new Exception("Erro ao mover a foto enviada.");
+            }
+        } else {
+            // Mantém a foto existente
+            $dados = Usuario::listar(1, $id_usuario);
+            if ($dados && isset($dados[0]['foto_perfil'])) {
+                $usuario->setFotoPerfil($dados[0]['foto_perfil']);
+            }
         }
 
-        $usuario->setFotoPerfil($nomeArquivo);
-        $_SESSION['usuario_foto'] = $nomeArquivo;
-    }
-
-    // Executa alteração
-    if ($usuario->alterar()) {
-        // Atualiza sessão
-        $_SESSION['usuario_nome']  = $nome;
-        $_SESSION['usuario_email'] = $email;
-
-        echo json_encode(["sucesso" => true, "mensagem" => "Perfil atualizado com sucesso!"]);
+        // Salva alterações
+        if ($usuario->alterar()) {
+            header("Location: ../views/profile/index.php?sucesso=1");
+            exit;
+        } else {
+            throw new Exception("Erro ao salvar alterações no banco.");
+        }
     } else {
-        echo json_encode(["sucesso" => false, "mensagem" => "Nenhuma alteração realizada."]);
+        throw new Exception("Nome e Email são obrigatórios.");
     }
-
 } catch (Exception $e) {
-    echo json_encode(["sucesso" => false, "mensagem" => "Erro: " . $e->getMessage()]);
+    header("Location: ../views/profile/index.php?erro=" . urlencode($e->getMessage()));
+    exit;
 }
-?>

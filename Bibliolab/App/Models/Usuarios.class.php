@@ -127,5 +127,16 @@ class Usuario {
     public function __toString(): string {
         return "Id: $this->id - Nome: $this->nome - Email: $this->email - Usuário: $this->usuario - Tipo: $this->tipo - Foto: $this->foto_perfil - Data Cadastro: $this->data_cadastro";
     }
+
+    public function alterarFoto($id, $foto_perfil): bool {
+    $conexao = new PDO(DSN, DB_USER, DB_PASSWORD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    $sql = "UPDATE Usuarios SET foto_perfil = :foto_perfil WHERE id = :id";
+    $stmt = $conexao->prepare($sql);
+    $stmt->bindValue(':foto_perfil', $foto_perfil);
+    $stmt->bindValue(':id', $id);
+    return $stmt->execute();
 }
+
+}
+
 ?>

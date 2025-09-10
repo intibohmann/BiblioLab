@@ -2,6 +2,7 @@
 require_once '../../Config/config.inc.php';
 require_once __DIR__ . '/../Models/Materiais.class.php';
 require_once __DIR__ . '/../Models/Biblioteca.class.php';
+require_once __DIR__ . '/../AI/GeminiAPI.php';
 session_start();
 
 if (!isset($_GET['id'])) {
@@ -50,6 +51,19 @@ function youtubeEmbedUrl($url) {
     }
     return $url;
 }
+
+// chave pode vir do seu config global
+$apiKey = "";  
+$gemini = new GeminiAPI($apiKey);
+
+// monta o prompt com base na biblioteca
+$tema = $biblioteca['titulo'] . " - " . $biblioteca['descricao'];
+$prompt = "Sugira materiais de estudo (livros, artigos, vídeos) e métodos eficazes 
+para aprender sobre o tema: $tema. Organize em tópicos curtos.";
+
+// chamada à IA
+$recomendacoesIA = $gemini->gerarSugestoes($prompt);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -107,7 +121,7 @@ function youtubeEmbedUrl($url) {
 
                                 <!-- Botões Editar / Excluir -->
                                 <div class="mt-3">
-                                <a href="editar_material.php?id=<?= $material['id'] ?>&bib_id=<?= $id ?>" 
+                               <a href="/BiblioLab/Bibliolab/App/Views/editar_material.php?id=<?= $material['id'] ?>&bib_id=<?= $id ?>" 
                                     class="btn btn-warning btn-sm">
                                      <i class="bi bi-pencil"></i> Editar 
                                     </a>
@@ -117,6 +131,7 @@ function youtubeEmbedUrl($url) {
                                        onclick="return confirm('Tem certeza que deseja excluir este material?')">
                                         <i class="bi bi-trash"></i> Excluir
                                     </a>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -133,8 +148,19 @@ function youtubeEmbedUrl($url) {
                 <span class="visually-hidden">Próximo</span>
             </button>
         </div>
+        <hr>
+            <h3>✨ Recomendações da IA</h3>
+            <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+    <p><strong>Tema analisado:</strong> <?= htmlspecialchars($biblioteca['titulo']) ?></p>
+    <pre style="white-space: pre-wrap;"><?= htmlspecialchars($recomendacoesIA) ?></pre>
+  </div>
+</div>
     <?php else: ?>
         <p>Não há materiais cadastrados para esta biblioteca.</p>
+        <a href="cadastro_material.php?bib_id=<?= $id ?>" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Cadastrar novo material
+        </a>
     <?php endif; ?>
 </div>
 

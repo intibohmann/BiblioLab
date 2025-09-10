@@ -42,7 +42,7 @@ function validarForm(event) {
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <h1 class="mt-4 mb-4"><?= $material ? "Editar Material" : "Cadastrar Material" ?></h1>
 
-        <form action="BiblioLab/Bibliolab/App/Controllers/salvar_material.php" method="post" enctype="multipart/form-data" class="mb-4" onsubmit="return validarForm(event)">
+        <form action="/BiblioLab/Bibliolab/App/Controllers/salvar_material.php" method="post" enctype="multipart/form-data" class="mb-4" onsubmit="return validarForm(event)">
             <?php if ($material): ?>
                 <input type="hidden" name="id" value="<?= $material['id'] ?>">
             <?php endif; ?>

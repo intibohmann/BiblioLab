@@ -102,6 +102,16 @@ class Biblioteca {
         $comando->bindValue(':id', $this->getId());
         return $comando->execute();
     }
+    
+    public static function buscarPorId($id) {
+    $conexao = new PDO(DSN, DB_USER, DB_PASSWORD);
+    $sql = "SELECT * FROM Biblioteca WHERE id = :id";
+    $comando = $conexao->prepare($sql);
+    $comando->bindValue(':id', $id, PDO::PARAM_INT);
+    $comando->execute();
+    return $comando->fetch(PDO::FETCH_ASSOC);
+}
+
 }
 ?>
 

@@ -68,3 +68,22 @@ CREATE TABLE contatos (
 
 ALTER TABLE Usuarios
 ADD COLUMN foto_perfil VARCHAR(255) DEFAULT NULL;
+
+ALTER TABLE materiais 
+DROP FOREIGN KEY materiais_ibfk_2;
+
+ALTER TABLE materiais 
+ADD CONSTRAINT materiais_ibfk_2
+FOREIGN KEY (biblioteca_id) REFERENCES biblioteca(id)
+ON DELETE CASCADE;
+
+CREATE TABLE ChatBiblioteca (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    biblioteca_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    mensagem TEXT NOT NULL,
+    data_envio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (biblioteca_id) REFERENCES Biblioteca(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
+);
+
