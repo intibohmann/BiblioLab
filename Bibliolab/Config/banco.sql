@@ -39,11 +39,9 @@ CREATE TABLE ProgressoEstudo (
 
 CREATE TABLE Favoritos (
     usuario_id INT,
-    material_id INT,
     data_adicionado DATETIME DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (usuario_id, material_id),
-    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id),
-    FOREIGN KEY (material_id) REFERENCES Materiais(id)
+    PRIMARY KEY (usuario_id),
+    FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
 );
 
 CREATE TABLE Biblioteca (
@@ -87,3 +85,5 @@ CREATE TABLE ChatBiblioteca (
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(id) ON DELETE CASCADE
 );
 
+ALTER TABLE Favoritos ADD biblioteca_id INT;
+ALTER TABLE Favoritos ADD FOREIGN KEY (biblioteca_id) REFERENCES Biblioteca(id);
